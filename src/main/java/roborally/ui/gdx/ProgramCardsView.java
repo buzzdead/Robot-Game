@@ -13,6 +13,8 @@ import roborally.game.objects.cards.IProgramCards;
 import roborally.utilities.AssetManagerUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class ProgramCardsView {
     private int cardPick;
@@ -22,6 +24,9 @@ public class ProgramCardsView {
     private int cardWidth;
     private int cardHeight;
     private Label doneLabel;
+    private float chosenX;
+    private float xPosition;
+    private HashMap<Integer, Float> xPositions;
 
     public ProgramCardsView() {
         this.topLabelList = new ArrayList<>();
@@ -29,7 +34,8 @@ public class ProgramCardsView {
         this.groups = new ArrayList<>();
         this.order = new int[]{-1, -1, -1, -1, -1};
         this.cardWidth = 75;
-        this.cardHeight = 116;
+        this.cardHeight = 65;
+        this.xPositions = new HashMap<>();
     }
 
     public void makeCard(IProgramCards.Card card) {
@@ -103,8 +109,11 @@ public class ProgramCardsView {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 for (int i = 0; i < order.length; i++)
                     if (groups.indexOf(group) == order[i]) {
-                        group.getChildren().get(1).setColor(Color.ORANGE);
+                        group.getChildren().get(1).setColor(Color.GREEN);
                         group.getChildren().get(0).setColor(Color.WHITE);
+                        group.setY(0);
+                        group.setX(xPositions.get(groups.indexOf(group)));
+                        selectedOrderLabel.setColor(Color.GREEN);
                         selectedOrderLabel.setText("");
                         reArrange(i);
                         if(cardPick -1 != -1)
@@ -119,8 +128,12 @@ public class ProgramCardsView {
                 topLabelList.get(cardPick).setText(Integer.toString((cardPick)));
                 group.addActor(topLabelList.get(cardPick));
                 order[cardPick++] = groups.indexOf(group);
-                group.getChildren().get(1).setColor(Color.GREEN.add(Color.RED));
-                group.getChildren().get(0).setColor(Color.GREEN.add(Color.RED));
+                group.getChildren().get(1).setColor(Color.GREEN);
+                group.getChildren().get(0).setColor(Color.GREEN);
+                group.setY(612);
+                xPositions.put(groups.indexOf(group), group.getX());
+                chosenX = 3 * getCardWidth() + getCardWidth() * cardPick+1;
+                group.setX(chosenX);
                 return true;
             }
         });
@@ -131,7 +144,7 @@ public class ProgramCardsView {
         Label.LabelStyle topLabelStyle = new Label.LabelStyle();
         topLabelStyle.font = new BitmapFont();
         Label topLabel = new Label("", topLabelStyle);
-        topLabel.setY(100);
+        topLabel.setY(75);
         topLabel.setX(28);
         topLabel.setColor(Color.GREEN);
         topLabel.setFontScale(2f);
@@ -142,10 +155,11 @@ public class ProgramCardsView {
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = new BitmapFont();
         Label label = new Label(Integer.toString(priority), labelStyle);
-        label.setX(28);
-        label.setY(10);
-        label.setFontScale(0.78f);
-        label.setColor(Color.ORANGE);
+        label.setX(15);
+        label.setY(0);
+        label.setFontScale(0.001f);
+        label.setFontScaleX(2);
+        label.setColor(Color.GREEN.add(Color.RED).add(Color.BLACK));
         return label;
     }
 

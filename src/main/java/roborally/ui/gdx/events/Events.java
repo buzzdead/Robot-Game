@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 
 public class Events {
     public static final float unitScale = 300 * 3f / 16f;
-    public static final float yDiff = 675/811f;
-    public static final float xDiff = 900f / (900f+272f);
+    public static final float yDiff = 675 / 825f;
+    public static final float xDiff = 900f / 1150;
     private boolean waitEvent;
     private int pauseCount;
     private float dt;
@@ -99,8 +99,8 @@ public class Events {
      */
     public void fadeRobot(GridPoint2 pos, TextureRegion[][] texture) {
         Image image = new Image(texture[0][0]);
-        image.setX((pos.x + 2.43f) * unitScale * xDiff);
-        image.setY(pos.y * unitScale * yDiff);
+        image.setX((pos.x + 2.24f) * unitScale * xDiff);
+        image.setY((pos.y + 1.3f) * unitScale * yDiff);
         image.setSize(unitScale * xDiff, unitScale* yDiff);
         this.fadeableRobots.add(new Alpha(1f, image));
     }

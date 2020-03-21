@@ -45,6 +45,7 @@ public class UI extends InputAdapter implements ApplicationListener {
     private Image bar;
     private Image bar2;
     private Image bar3;
+    private Image bar4;
 
 
     public UI() {
@@ -75,8 +76,8 @@ public class UI extends InputAdapter implements ApplicationListener {
 
         // Initialize the camera
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth()+272, Gdx.graphics.getHeight() + 136);
-        camera.translate(-136, 0);
+        camera.setToOrtho(false, Gdx.graphics.getWidth()+250, Gdx.graphics.getHeight()+150);
+        camera.translate(-125, -75);
         camera.update();
         // Initialize the map renderer
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 3 / 16f);
@@ -87,11 +88,13 @@ public class UI extends InputAdapter implements ApplicationListener {
 
         menu = new Menu(stage, events);
         bar = new Image(new Texture("assets/bar.png"));
-        bar.setY(560);
+        bar.setY(613);
         bar2 = new Image(new Texture("assets/bar2.png"));
         bar3 = new Image(new Texture("assets/bar2.png"));
-        bar3.setPosition(675+120, 0);
+        bar3.setPosition(675+125, 0);
         game.getGameOptions().enterMenu(true);
+        bar4 = new Image(new Texture("assets/bar.png"));
+        bar4.setHeight(62);
     }
 
     @Override
@@ -119,6 +122,7 @@ public class UI extends InputAdapter implements ApplicationListener {
             bar.draw(batch, 1);
             bar2.draw(batch, 1);
             bar3.draw(batch, 1);
+            bar4.draw(batch, 1);
         }
         if (cardPhase) {
             cardPhaseRun();
@@ -232,7 +236,6 @@ public class UI extends InputAdapter implements ApplicationListener {
         for (Group group : this.programCardsView.getGroups()) {
             group.setX(i += programCardsView.getCardWidth());
             System.out.println(i);
-            group.setY(SettingsUtil.WINDOW_HEIGHT-116);
             stage.addActor(group);
         }
         cardPhase = true;

@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class LaserEvent {
     public static final float unitScale = 300 * 3f / 16f;
-    public static final float yDiff = 675/811f;
-    public static final float xDiff = 900f / (900f+272f);
+    public static final float yDiff = 675/825f;
+    public static final float xDiff = 900f / 1150;
     private static float tileEdge = 10;
     private GridPoint2 laserPoint;
     private boolean laserEvent;
@@ -48,10 +48,10 @@ public class LaserEvent {
                 this.factor = -this.factor;
         }
         System.out.println(origin);
-        this.laserImage.setX(unitScale * (origin.x + 2.44f) * xDiff);
+        this.laserImage.setX(unitScale * (origin.x + 2.24f) * xDiff);
         if(this.id == TileName.LASER_VERTICAL.getTileID())
-            this.laserImage.setX(unitScale * (origin.x + 2.44f) * xDiff);
-        this.laserImage.setY(unitScale * origin.y * yDiff);
+            this.laserImage.setX(unitScale * (origin.x + 2.24f) * xDiff);
+        this.laserImage.setY(unitScale * (origin.y +1.3f) * yDiff);
         this.laserEvent = true;
     }
 
@@ -73,8 +73,8 @@ public class LaserEvent {
         if (this.laserImage.getWidth() < tileEdge) {
             hitRobot(robots);
         }
-        boolean negative = this.laserImage.getX() <= (this.laserPoint.x + 2.44) * unitScale * xDiff + tileEdge;
-        boolean positive = this.laserImage.getX() >= (this.laserPoint.x + 2.44) * unitScale * xDiff - tileEdge;
+        boolean negative = this.laserImage.getX() <= (this.laserPoint.x + 2.24) * unitScale * xDiff + tileEdge;
+        boolean positive = this.laserImage.getX() >= (this.laserPoint.x + 2.24) * unitScale * xDiff - tileEdge;
         float oldWidth = this.laserImage.getWidth();
         float oldX = this.laserImage.getX();
         if (positive && factor > 0) {
@@ -93,8 +93,8 @@ public class LaserEvent {
         if (this.laserImage.getHeight() < tileEdge) {
             hitRobot(robots);
         }
-        boolean negative = this.laserImage.getY() <= (this.laserPoint.y) * unitScale * yDiff + tileEdge;
-        boolean positive = this.laserImage.getY() >= (this.laserPoint.y) * unitScale * yDiff - tileEdge;
+        boolean negative = this.laserImage.getY() <= (this.laserPoint.y + 1.3f) * unitScale * yDiff + tileEdge;
+        boolean positive = this.laserImage.getY() >= (this.laserPoint.y + 1.3f) * unitScale * yDiff - tileEdge;
         float oldHeight = this.laserImage.getHeight();
         float oldY = this.laserImage.getY();
         if (positive && factor > 0) {

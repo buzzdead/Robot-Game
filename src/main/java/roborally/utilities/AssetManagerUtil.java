@@ -130,7 +130,7 @@ public class AssetManagerUtil {
 
     // Only one map so far, but can add more and return a list.
     public static TiledMap getMap(int map) {
-        TiledMap[] tiledMaps = {manager.get(SIGMUNDS_MAP), manager.get(LISES_MAP)};
+        TiledMap[] tiledMaps = {manager.get(LISES_MAP), manager.get(SIGMUNDS_MAP)};
         List<TiledMap> maps = Arrays.asList(tiledMaps);
         loadedMap = maps.get(map);
         return loadedMap;

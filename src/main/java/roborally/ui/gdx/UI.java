@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 import roborally.game.Game;
 import roborally.game.IGame;
@@ -40,6 +42,9 @@ public class UI extends InputAdapter implements ApplicationListener {
     private boolean cardPhase;
     private ProgramCardsView programCardsView;
     private Events events;
+    private Image bar;
+    private Image bar2;
+    private Image bar3;
 
 
     public UI() {
@@ -70,7 +75,8 @@ public class UI extends InputAdapter implements ApplicationListener {
 
         // Initialize the camera
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, Gdx.graphics.getWidth()+272, Gdx.graphics.getHeight() + 136);
+        camera.translate(-136, 0);
         camera.update();
         // Initialize the map renderer
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 3 / 16f);
@@ -78,8 +84,13 @@ public class UI extends InputAdapter implements ApplicationListener {
         Gdx.input.setInputProcessor(this);
         batch = new SpriteBatch();
         stage = new Stage();
-        menu = new Menu(stage, events);
 
+        menu = new Menu(stage, events);
+        bar = new Image(new Texture("assets/bar.png"));
+        bar.setY(560);
+        bar2 = new Image(new Texture("assets/bar2.png"));
+        bar3 = new Image(new Texture("assets/bar2.png"));
+        bar3.setPosition(675+120, 0);
         game.getGameOptions().enterMenu(true);
     }
 
@@ -100,14 +111,19 @@ public class UI extends InputAdapter implements ApplicationListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         mapRenderer.render();
-        if (cardPhase) {
-            cardPhaseRun();
-            stage.act();
-        }
         if (paused) {
             pause();
         }
         batch.begin();
+        if(!paused) {
+            bar.draw(batch, 1);
+            bar2.draw(batch, 1);
+            bar3.draw(batch, 1);
+        }
+        if (cardPhase) {
+            cardPhaseRun();
+            stage.act();
+        }
         if (events.getFadeRobot() && !paused)
             events.fadeRobots(batch);
         if (events.hasLaserEvent() && !paused)
@@ -189,12 +205,10 @@ public class UI extends InputAdapter implements ApplicationListener {
     }
 
     public void cardPhaseRun() {
-        batch.begin();
         programCardsView.getDoneLabel().draw(batch, stage.getWidth() / 2);
         for (Group group : programCardsView.getGroups()) {
             group.draw(batch, 1);
         }
-        batch.end();
         if (programCardsView.done()) {
             Gdx.input.setInputProcessor(this);
             cardPhase = false;
@@ -212,10 +226,13 @@ public class UI extends InputAdapter implements ApplicationListener {
         programCardsView.makeDoneLabel();
         stage.addActor(programCardsView.getDoneLabel());
         float i = stage.getWidth() - programCardsView.getGroups().size() * programCardsView.getCardWidth();
-        programCardsView.getDoneLabel().setX(stage.getWidth() / 2);
+        programCardsView.getDoneLabel().setX(stage.getWidth() - programCardsView.getDoneLabel().getWidth() * 2.5f);
+        programCardsView.getDoneLabel().setY(SettingsUtil.WINDOW_HEIGHT-116);
         i = i / 2 - programCardsView.getCardWidth();
         for (Group group : this.programCardsView.getGroups()) {
             group.setX(i += programCardsView.getCardWidth());
+            System.out.println(i);
+            group.setY(SettingsUtil.WINDOW_HEIGHT-116);
             stage.addActor(group);
         }
         cardPhase = true;

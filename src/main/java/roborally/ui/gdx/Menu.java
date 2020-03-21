@@ -322,7 +322,7 @@ public class Menu {
             resume = false;
             return true;
         }
-        if (resume) {
+        if (resume && !events.hasWaitEvent()) {
             if (isFunMode && !events.hasWaitEvent())
                 game.funMode();
             else {

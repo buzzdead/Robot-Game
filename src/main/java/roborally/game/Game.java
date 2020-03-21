@@ -54,7 +54,6 @@ public class Game implements IGame {
         deckOfProgramCards = new ProgramCards();
         this.events = events;
         this.gameOptions = new GameOptions();
-        this.laserRegister = new LaserRegister();
     }
 
     public Game(boolean runAIGame) {
@@ -68,6 +67,7 @@ public class Game implements IGame {
         gameBoard = new GameBoard();
         layers = gameBoard.getLayers();
         flags = gameBoard.findAllFlags();
+        this.laserRegister = new LaserRegister(layers);
         this.robots = gameOptions.makeRobots(layers, laserRegister);
         //this.AIPlayer = new AIPlayer(robots.get(1), this.gameBoard);
     }
@@ -77,6 +77,7 @@ public class Game implements IGame {
         gameBoard = new GameBoard();
         layers = gameBoard.getLayers();
         flags = gameBoard.findAllFlags();
+        this.laserRegister = new LaserRegister(layers);
         robots = gameOptions.funMode(layers, flags, laserRegister);
         this.events.setGameSpeed("fastest");
         fun = true;
@@ -290,8 +291,13 @@ public class Game implements IGame {
             moveExpressConveyorBelts();
             moveAllConveyorBelts();
             moveCogs();
+            pushActivePushers();
             currentRobotID = 0;
         }
+    }
+
+    private void pushActivePushers() {
+
     }
 
     private boolean isNotInGraveyard(Robot robot) {

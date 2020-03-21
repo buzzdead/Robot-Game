@@ -37,9 +37,9 @@ public class Robot implements Programmable {
         this.robotView = robotView;
         setPosition(new GridPoint2(x, y));
         this.setTextureRegion(robotID);
-        laser = new Laser(0);
         this.robotLogic.setCheckPoint(x, y);
         this.layers = new Layers();
+        laser = new Laser(0, layers);
         this.listener = new Listener(layers);
         listener.listenLaser(x, y, getName(), laserRegister);
         this.laserRegister = laserRegister;

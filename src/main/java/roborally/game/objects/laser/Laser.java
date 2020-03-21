@@ -42,9 +42,9 @@ public class Laser {
      *
      * @param laserTileID Horizontal or Vertical laser.
      */
-    public Laser(int laserTileID) {
+    public Laser(int laserTileID, ILayers layers) {
         this.tiledTranslator = new TiledTranslator();
-        this.layers = new Layers(); // FIXME: Isn't this created in GameBoard?
+        this.layers = layers;
         this.laserTileID = laserTileID;
         this.laserEndPositions = new ArrayList<>();
         this.removeLaser = false;

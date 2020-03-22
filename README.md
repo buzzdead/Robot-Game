@@ -7,6 +7,7 @@ Currently a simple and not functional implementation of Robo Rally.
 ## Deliverables
 -   [Obligatorisk oppgave 1](Deliverables/ObligatoriskOppgave1.md)
 -   [Obligatorisk oppgave 2](Deliverables/ObligatoriskOppgave2.md)
+-   [Obligatorisk oppgave 3](Deliverables/ObligatoriskOppgave3.md)
 
 ## Setup
 1.  Install [Maven](https://maven.apache.org/download.cgi)

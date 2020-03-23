@@ -46,6 +46,7 @@ public class UI extends InputAdapter implements ApplicationListener {
     private Image bar2;
     private Image bar3;
     private Image bar4;
+    private Image poweredDown;
 
 
     public UI() {
@@ -91,10 +92,17 @@ public class UI extends InputAdapter implements ApplicationListener {
         bar.setY(613);
         bar2 = new Image(new Texture("assets/bar2.png"));
         bar3 = new Image(new Texture("assets/bar2.png"));
+        bar2.setHeight(675);
+        bar3.setHeight(675);
         bar3.setPosition(675+125, 0);
         game.getGameOptions().enterMenu(true);
         bar4 = new Image(new Texture("assets/bar.png"));
         bar4.setHeight(62);
+        poweredDown = new Image(new Texture("assets/powereddown.png"));
+        poweredDown.setY(0);
+        poweredDown.setX(815);
+        poweredDown.setSize(75, 75);
+
     }
 
     @Override
@@ -125,6 +133,7 @@ public class UI extends InputAdapter implements ApplicationListener {
             bar4.draw(batch, 1);
         }
         if (cardPhase) {
+            poweredDown.draw(batch, 1);
             cardPhaseRun();
             stage.act();
         }
@@ -230,8 +239,8 @@ public class UI extends InputAdapter implements ApplicationListener {
         programCardsView.makeDoneLabel();
         stage.addActor(programCardsView.getDoneLabel());
         float i = stage.getWidth() - programCardsView.getGroups().size() * programCardsView.getCardWidth();
-        programCardsView.getDoneLabel().setX(stage.getWidth() - programCardsView.getDoneLabel().getWidth() * 2.5f);
-        programCardsView.getDoneLabel().setY(SettingsUtil.WINDOW_HEIGHT-116);
+        programCardsView.getDoneLabel().setX(820);
+        programCardsView.getDoneLabel().setY(70);
         i = i / 2 - programCardsView.getCardWidth();
         for (Group group : this.programCardsView.getGroups()) {
             group.setX(i += programCardsView.getCardWidth());

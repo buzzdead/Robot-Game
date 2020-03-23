@@ -2,7 +2,6 @@ package roborally.game.objects.laser;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.GridPoint2;
-import roborally.ui.ILayers;
 import roborally.ui.Layers;
 import roborally.ui.listeners.WallListener;
 import roborally.utilities.AssetManagerUtil;
@@ -19,7 +18,7 @@ public class Laser {
     private boolean removeLaser;
 
     private ITiledTranslator tiledTranslator;
-    private ILayers layers;
+    private Layers layers;
     private WallListener wallListener;
 
     //region GridPoint2 positions
@@ -42,7 +41,7 @@ public class Laser {
      *
      * @param laserTileID Horizontal or Vertical laser.
      */
-    public Laser(int laserTileID, ILayers layers) {
+    public Laser(int laserTileID, Layers layers) {
         this.tiledTranslator = new TiledTranslator();
         this.layers = layers;
         this.laserTileID = laserTileID;

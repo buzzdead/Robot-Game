@@ -1,6 +1,6 @@
 package roborally.ui.listeners;
 
-import roborally.ui.ILayers;
+import roborally.ui.Layers;
 import roborally.utilities.enums.TileName;
 import roborally.utilities.tiledtranslator.TiledTranslator;
 
@@ -11,9 +11,9 @@ import java.util.List;
 public class WallListener {
     private HashMap<String, List<TileName>> mapOfWallNames;
     private TiledTranslator tiledTranslator;
-    private ILayers layers;
+    private Layers layers;
 
-    public WallListener(ILayers layers) {
+    public WallListener(Layers layers) {
         this.mapOfWallNames = makeWallMap();
         this.tiledTranslator = new TiledTranslator();
         this.layers = layers;

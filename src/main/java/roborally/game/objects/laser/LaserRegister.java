@@ -2,7 +2,7 @@ package roborally.game.objects.laser;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.GridPoint2;
-import roborally.ui.ILayers;
+import roborally.ui.Layers;
 import roborally.utilities.AssetManagerUtil;
 import roborally.utilities.enums.TileName;
 
@@ -11,9 +11,9 @@ import java.util.HashSet;
 
 public class LaserRegister {
     private HashMap<String, HashSet<Laser>> activeLasers;
-    private ILayers layers;
+    private Layers layers;
 
-    public LaserRegister(ILayers layers)
+    public LaserRegister(Layers layers)
     {
         this.layers = layers;
         activeLasers = new HashMap<>();

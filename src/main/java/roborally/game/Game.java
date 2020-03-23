@@ -6,15 +6,15 @@ import com.badlogic.gdx.math.GridPoint2;
 import roborally.game.objects.cards.CardsInHand;
 import roborally.game.objects.cards.IProgramCards;
 import roborally.game.objects.cards.ProgramCards;
+import roborally.game.objects.gameboard.Flag;
 import roborally.game.objects.gameboard.GameBoard;
-import roborally.game.objects.gameboard.IFlag;
-import roborally.game.objects.gameboard.IGameBoard;
 import roborally.game.objects.laser.LaserRegister;
 import roborally.game.objects.robot.AIPlayer;
 import roborally.game.objects.robot.Robot;
-import roborally.ui.ILayers;
+import roborally.ui.Layers;
 import roborally.ui.gdx.ProgramCardsView;
 import roborally.ui.gdx.events.Events;
+import roborally.ui.listeners.CollisionListener;
 import roborally.utilities.AssetManagerUtil;
 import roborally.utilities.SettingsUtil;
 import roborally.utilities.enums.Direction;
@@ -29,11 +29,11 @@ public class Game implements IGame {
     private final boolean DEBUG = true;
 
     //region Game Objects
-    private IGameBoard gameBoard;
-    private ILayers layers;
+    private GameBoard gameBoard;
+    private Layers layers;
     private AIPlayer[] aiRobots;
     private ArrayList<Robot> robots;
-    private ArrayList<IFlag> flags;
+    private ArrayList<Flag> flags;
     private IProgramCards deckOfProgramCards;
     private LaserRegister laserRegister;
     //endregion
@@ -101,13 +101,8 @@ public class Game implements IGame {
     }
 
     @Override
-    public ILayers getLayers() {
+    public Layers getLayers() {
         return this.layers;
-    }
-
-    @Override
-    public AIPlayer[] getAIRobots() {
-        return aiRobots;
     }
 
     //region Robots
@@ -292,12 +287,21 @@ public class Game implements IGame {
             moveAllConveyorBelts();
             moveCogs();
             pushActivePushers();
+            registerFlagPositions();
             currentRobotID = 0;
         }
     }
 
     private void pushActivePushers() {
-
+        CollisionListener collisionListener = new CollisionListener(layers);
+        
+    }
+    
+    public void addPushers() {
+        for (int i = 0; i < layers.getWidth(); i++) {
+            for (int j = 0; j < layers.getWidth(); j++) {
+            }
+        }
     }
 
     private boolean isNotInGraveyard(Robot robot) {
@@ -399,7 +403,7 @@ public class Game implements IGame {
     @Override
     public void registerFlagPositions() {
         System.out.println("\nChecking if any robots have currently arrived at their next flag position...");
-        for (IFlag flag : flags) {
+        for (Flag flag : flags) {
             int flagX = flag.getPosition().x;
             int flagY = flag.getPosition().y;
             for (Robot robot : robots) {
@@ -409,6 +413,7 @@ public class Game implements IGame {
                     int nextFlag = robot.getNextFlag();
                     if (flag.getID() == nextFlag) {
                         robot.visitNextFlag();
+                        robot.getLogic().setCheckPoint(flagX, flagY);
                         System.out.println("A flag has been visited");
                     }
                 }

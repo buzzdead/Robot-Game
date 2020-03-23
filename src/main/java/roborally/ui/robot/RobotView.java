@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.GridPoint2;
-import roborally.ui.ILayers;
 import roborally.ui.Layers;
 import roborally.ui.gdx.UI;
 import roborally.utilities.AssetManagerUtil;
@@ -16,7 +15,7 @@ public class RobotView implements IRobotView {
     private TiledMapTileLayer.Cell robotLostCellTexture;
     private TextureRegion[][] robotTextureRegion;
     private TiledMapTileLayer.Cell robotDefaultCellTexture;
-    private ILayers layers;
+    private Layers layers;
     private GridPoint2 pos;
     private int height;
     private int width;

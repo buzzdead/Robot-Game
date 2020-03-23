@@ -3,12 +3,11 @@ package roborally.game.objects;
 import com.badlogic.gdx.math.GridPoint2;
 import org.junit.Test;
 import roborally.game.objects.gameboard.Flag;
-import roborally.game.objects.gameboard.IFlag;
 
 import static org.junit.Assert.assertEquals;
 
 public class FlagTest {
-    IFlag flag;
+    Flag flag;
 
     @Test
     public void verifyThatGetPositionEqualsFlagPosition() {

@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.GridPoint2;
 import roborally.game.objects.cards.IProgramCards;
 import roborally.game.objects.laser.Laser;
 import roborally.game.objects.laser.LaserRegister;
-import roborally.ui.ILayers;
 import roborally.ui.Layers;
 import roborally.ui.listeners.Listener;
 import roborally.ui.robot.IRobotView;
@@ -20,7 +19,7 @@ public class Robot implements Programmable {
     private RobotLogic robotLogic;
     private boolean[] visitedFlags;
     private Laser laser;
-    private ILayers layers;
+    private Layers layers;
     private Listener listener;
     private LaserRegister laserRegister;
 
@@ -103,7 +102,7 @@ public class Robot implements Programmable {
                 this.setPosition(newPos);
                 System.out.println("New position: " + newPos);
                 if (layers.assertHoleNotNull(newPos.x, newPos.y)) {
-                    robotLogic.takeDamage(10);
+                    takeDamage(10);
                     this.setLostTexture();
                 }
                 this.robotView.setDirection(getPosition(), robotLogic.getDirection());
@@ -112,6 +111,11 @@ public class Robot implements Programmable {
             System.out.println("New position: " + pos);
     }
     //endregion
+
+    public void takeDamage(int dmg) {
+        if(getLogic().takeDamage(dmg))
+            backToCheckPoint();
+    }
 
     public void backToCheckPoint() {
         robotView.goToCheckPoint(this.getPosition(), robotLogic.getCheckPoint());

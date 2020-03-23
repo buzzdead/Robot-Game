@@ -2,7 +2,7 @@ package roborally.ui.listeners;
 
 import com.badlogic.gdx.math.GridPoint2;
 import roborally.game.objects.laser.LaserRegister;
-import roborally.ui.ILayers;
+import roborally.ui.Layers;
 
 public class Listener {
     private WallListener wallListener;
@@ -10,7 +10,7 @@ public class Listener {
     private LaserListener laserListener;
 
     // Makes a new Listener to listen to the different listeners.
-    public Listener(ILayers layers) {
+    public Listener(Layers layers) {
         this.wallListener = new WallListener(layers);
         this.collisionListener = new CollisionListener(layers);
         this.laserListener = new LaserListener(layers);

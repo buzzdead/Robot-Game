@@ -2,14 +2,14 @@ package roborally.ui.listeners;
 
 import com.badlogic.gdx.math.GridPoint2;
 import roborally.game.objects.robot.Robot;
-import roborally.ui.ILayers;
+import roborally.ui.Layers;
 import roborally.utilities.AssetManagerUtil;
 
 public class CollisionListener {
-    private ILayers layers;
+    private Layers layers;
     private WallListener wallListener;
 
-    public CollisionListener(ILayers layers) {
+    public CollisionListener(Layers layers) {
         this.layers = layers;
         this.wallListener = new WallListener(this.layers);
     }

@@ -5,15 +5,14 @@ import com.badlogic.gdx.math.GridPoint2;
 import roborally.utilities.tiledtranslator.ITiledTranslator;
 import roborally.utilities.enums.TileName;
 import roborally.utilities.tiledtranslator.TiledTranslator;
-import roborally.ui.ILayers;
 import roborally.ui.Layers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GameBoard implements IGameBoard {
+public class GameBoard {
 
-    private ILayers layers;
+    private Layers layers;
     private HashMap<TileName, Integer> flagIdMap;
 
     private ITiledTranslator tiledTranslator;
@@ -28,10 +27,9 @@ public class GameBoard implements IGameBoard {
         this.flagIdMap.put(TileName.FLAG_4, 4);
         this.layers = new Layers();
     }
-
-    @Override
-    public ArrayList<IFlag> findAllFlags() {
-        ArrayList<IFlag> flags = new ArrayList<>();
+    
+    public ArrayList<Flag> findAllFlags() {
+        ArrayList<Flag> flags = new ArrayList<>();
         TiledMapTileLayer flagLayer = layers.getFlag();
 
         for (int x = 0; x < flagLayer.getWidth(); x++) {
@@ -48,9 +46,8 @@ public class GameBoard implements IGameBoard {
         }
         return flags;
     }
-
-    @Override
-    public ILayers getLayers() {
+    
+    public Layers getLayers() {
         return this.layers;
     }
 }

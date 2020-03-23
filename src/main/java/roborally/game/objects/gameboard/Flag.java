@@ -2,7 +2,7 @@ package roborally.game.objects.gameboard;
 
 import com.badlogic.gdx.math.GridPoint2;
 
-public class Flag implements IFlag {
+public class Flag {
     private int id;
     private GridPoint2 pos;
 
@@ -11,12 +11,10 @@ public class Flag implements IFlag {
         this.pos = pos;
     }
 
-    @Override
     public GridPoint2 getPosition() {
         return pos;
     }
 
-    @Override
     public int getID() {
         return id;
     }

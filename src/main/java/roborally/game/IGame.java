@@ -2,7 +2,7 @@ package roborally.game;
 
 import roborally.game.objects.robot.AIPlayer;
 import roborally.game.objects.robot.Robot;
-import roborally.ui.ILayers;
+import roborally.ui.Layers;
 import roborally.ui.gdx.ProgramCardsView;
 import roborally.utilities.enums.PhaseStep;
 import roborally.utilities.enums.RoundStep;
@@ -16,15 +16,7 @@ public interface IGame {
      *
      * @return the layers of the gameboard
      */
-    ILayers getLayers();
-
-    /**
-     * Serves ONLY feed the keyUp method..
-     *
-     * @deprecated serves no purpose at the moment
-     */
-    @Deprecated
-    AIPlayer[] getAIRobots();
+    Layers getLayers();
 
     /**
      * Exists only for debugging.

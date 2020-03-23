@@ -118,7 +118,7 @@ public class LaserEvent {
                 this.robot = robot;
             }
         if (hitRobot) {
-            this.robot.getLogic().takeDamage(1);
+            this.robot.takeDamage(1);
             Sound sound = AssetManagerUtil.manager.get(AssetManagerUtil.ROBOT_HIT);
             sound.play(0.035f * AssetManagerUtil.volume);
             hitRobot = false;

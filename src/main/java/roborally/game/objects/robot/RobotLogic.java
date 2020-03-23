@@ -108,10 +108,17 @@ public class RobotLogic implements Programmable {
         return reboots;
     }
 
-    public void takeDamage(int damage) {
+    public boolean takeDamage(int damage) {
         this.health -= damage;
-        if (this.health < 0)
+        if (this.health <= 0) {
             this.health = 0;
+            if(reboots!=0) {
+                reboots -= 1;
+                this.health = 10;
+                return true;
+            }
+        }
+        return false;
     }
 
     //region Direction

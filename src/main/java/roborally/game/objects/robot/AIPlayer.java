@@ -4,8 +4,8 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.Queue;
 import roborally.game.objects.cards.IProgramCards;
 import roborally.game.objects.cards.ProgramCards;
-import roborally.game.objects.gameboard.IFlag;
-import roborally.game.objects.gameboard.IGameBoard;
+import roborally.game.objects.gameboard.Flag;
+import roborally.game.objects.gameboard.GameBoard;
 import roborally.utilities.enums.Direction;
 
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import java.util.HashMap;
 
 public class AIPlayer {
     private Programmable robot;
-    private IGameBoard gameBoard;
-    private Queue<IFlag> flags;
+    private GameBoard gameBoard;
+    private Queue<Flag> flags;
     private ArrayList<ArrayList<IProgramCards.Card>> valueCards; // 0 = move cards, 1 = left, 2 = right
     private ArrayList<Integer> moveCardValues;
     private int[] order;
@@ -24,7 +24,7 @@ public class AIPlayer {
     private GridPoint2 hypoPos;
     private boolean ok;
 
-    public AIPlayer(Programmable robot, IGameBoard gameBoard) {
+    public AIPlayer(Programmable robot, GameBoard gameBoard) {
         this.robot = robot;
         this.gameBoard = gameBoard;
         this.flags = new Queue<>();
@@ -67,9 +67,9 @@ public class AIPlayer {
     }
 
     private void printAllFlags() {
-        ArrayList<IFlag> temp = gameBoard.findAllFlags();
-        temp.sort(Comparator.comparing(IFlag::getID));
-        for (IFlag flag : temp)
+        ArrayList<Flag> temp = gameBoard.findAllFlags();
+        temp.sort(Comparator.comparing(Flag::getID));
+        for (Flag flag : temp)
             flags.addLast(flag);
     }
 
@@ -124,7 +124,7 @@ public class AIPlayer {
             ok = true;
             return new GridPoint2(0,0);
         }
-        IFlag flag = flags.removeFirst();
+        Flag flag = flags.removeFirst();
         GridPoint2 fPos = flag.getPosition();
         GridPoint2 rPos = hypoPos;
         GridPoint2 movableValue = new GridPoint2();

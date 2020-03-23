@@ -59,22 +59,22 @@ public class AssetManagerUtil {
             = new AssetDescriptor<>("cards/u-turn.png", Texture.class);
 
     //Robots
-    private static final AssetDescriptor<Texture> ANGRY
-            = new AssetDescriptor<>("robots/new/Angry.png", Texture.class);
-    private static final AssetDescriptor<Texture> BLUE
-            = new AssetDescriptor<>("robots/new/Blue.png", Texture.class);
-    private static final AssetDescriptor<Texture> GREEN
-            = new AssetDescriptor<>("robots/new/Green.png", Texture.class);
-    private static final AssetDescriptor<Texture> ORANGE
-            = new AssetDescriptor<>("robots/new/Orange.png", Texture.class);
-    private static final AssetDescriptor<Texture> PINK
-            = new AssetDescriptor<>("robots/new/Pink.png", Texture.class);
-    private static final AssetDescriptor<Texture> PURPLE
-            = new AssetDescriptor<>("robots/new/Purple.png", Texture.class);
     private static final AssetDescriptor<Texture> RED
-            = new AssetDescriptor<>("robots/new/Red.png", Texture.class);
+            = new AssetDescriptor<>("robots/redgroup.png", Texture.class);
+    private static final AssetDescriptor<Texture> BLUE
+            = new AssetDescriptor<>("robots/bluegroup.png", Texture.class);
+    private static final AssetDescriptor<Texture> GREEN
+            = new AssetDescriptor<>("robots/greengroup.png", Texture.class);
     private static final AssetDescriptor<Texture> YELLOW
-            = new AssetDescriptor<>("robots/new/Yellow.png", Texture.class);
+            = new AssetDescriptor<>("robots/yellowgroup.png", Texture.class);
+    private static final AssetDescriptor<Texture> PINK
+            = new AssetDescriptor<>("robots/pinkgroup.png", Texture.class);
+    private static final AssetDescriptor<Texture> PURPLE
+            = new AssetDescriptor<>("robots/purplegroup.png", Texture.class);
+    private static final AssetDescriptor<Texture> BROWN
+            = new AssetDescriptor<>("robots/browngroup.png", Texture.class);
+    private static final AssetDescriptor<Texture> TEAL
+            = new AssetDescriptor<>("robots/tealgroup.png", Texture.class);
     public static ArrayList<Robot> robots;
     private static TiledMap loadedMap;
     private static HashMap<String, TiledMapTileLayer> layers;
@@ -86,11 +86,11 @@ public class AssetManagerUtil {
         manager.load(LISES_MAP);
 
         //Robots
-        manager.load(ANGRY);
+        manager.load(BROWN);
         manager.load(BACKUP);
         manager.load(BLUE);
         manager.load(GREEN);
-        manager.load(ORANGE);
+        manager.load(TEAL);
         manager.load(PINK);
         manager.load(PURPLE);
         manager.load(RED);
@@ -153,10 +153,10 @@ public class AssetManagerUtil {
      */
     public static Texture getRobotTexture(int i) {
         Texture[] robotTexture = new Texture[8];
-        robotTexture[0] = manager.get(ANGRY);
+        robotTexture[0] = manager.get(BROWN);
         robotTexture[1] = manager.get(BLUE);
         robotTexture[2] = manager.get(GREEN);
-        robotTexture[3] = manager.get(ORANGE);
+        robotTexture[3] = manager.get(TEAL);
         robotTexture[4] = manager.get(PINK);
         robotTexture[5] = manager.get(PURPLE);
         robotTexture[6] = manager.get(RED);

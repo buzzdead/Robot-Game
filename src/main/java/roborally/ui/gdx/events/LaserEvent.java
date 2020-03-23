@@ -15,6 +15,7 @@ public class LaserEvent {
     public static final float unitScale = 300 * 3f / 16f;
     public static final float yDiff = 675/825f;
     public static final float xDiff = 900f / 1150;
+    private float xShift;
     private static float tileEdge = 10;
     private GridPoint2 laserPoint;
     private boolean laserEvent;
@@ -24,7 +25,8 @@ public class LaserEvent {
     private boolean hitRobot;
     private Robot robot;
 
-    public LaserEvent(int factor) {
+    public LaserEvent(int factor)
+    {   this.xShift = 2.24f;
         this.factor = factor;
     }
 
@@ -48,9 +50,7 @@ public class LaserEvent {
                 this.factor = -this.factor;
         }
         System.out.println(origin);
-        this.laserImage.setX(unitScale * (origin.x + 2.24f) * xDiff);
-        if(this.id == TileName.LASER_VERTICAL.getTileID())
-            this.laserImage.setX(unitScale * (origin.x + 2.24f) * xDiff);
+        this.laserImage.setX(unitScale * (origin.x + xShift) * xDiff);
         this.laserImage.setY(unitScale * (origin.y +1.3f) * yDiff);
         this.laserEvent = true;
     }

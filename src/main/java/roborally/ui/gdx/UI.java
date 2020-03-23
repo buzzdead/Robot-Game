@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -47,6 +48,10 @@ public class UI extends InputAdapter implements ApplicationListener {
     private Image bar3;
     private Image bar4;
     private Image poweredDown;
+    private TextureRegion[][] testRegion;
+    private Image testBot;
+    private Image testBot2;
+    private Image testImage;
 
 
     public UI() {
@@ -98,7 +103,7 @@ public class UI extends InputAdapter implements ApplicationListener {
         game.getGameOptions().enterMenu(true);
         bar4 = new Image(new Texture("assets/bar.png"));
         bar4.setHeight(62);
-        poweredDown = new Image(new Texture("assets/powereddown.png"));
+        poweredDown = new Image(new Texture("assets/poweron.png"));
         poweredDown.setY(0);
         poweredDown.setX(815);
         poweredDown.setSize(75, 75);

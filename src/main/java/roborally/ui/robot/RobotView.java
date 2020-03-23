@@ -31,7 +31,7 @@ public class RobotView implements IRobotView {
     public void setWinTexture(GridPoint2 pos) {
         if (this.robotWonCellTexture == null) {
             this.robotWonCellTexture = new TiledMapTileLayer.Cell();
-            this.robotWonCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[0][2]));
+            this.robotWonCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[0][1]));
         }
         layers.setRobotCell(pos.x, pos.y, this.robotWonCellTexture);
     }
@@ -53,7 +53,7 @@ public class RobotView implements IRobotView {
     public TiledMapTileLayer.Cell getTexture() {
         if (this.robotDefaultCellTexture == null) {
             this.robotDefaultCellTexture = new TiledMapTileLayer.Cell();
-            this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[0][0]));
+            this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[1][1]));
         }
         return this.robotDefaultCellTexture;
     }
@@ -65,7 +65,7 @@ public class RobotView implements IRobotView {
 
     @Override
     public void setTextureRegion(int robotID) {
-        this.robotTextureRegion = TextureRegion.split(AssetManagerUtil.getRobotTexture(robotID), UI.TILE_SIZE, UI.TILE_SIZE);
+        this.robotTextureRegion = TextureRegion.split(AssetManagerUtil.getRobotTexture(robotID), 250, 300);
         layers.setRobotCell(this.pos.x, this.pos.y, getTexture());
     }
 
@@ -92,6 +92,13 @@ public class RobotView implements IRobotView {
     @Override
     public void setDirection(GridPoint2 pos, Direction direction) {
         if (layers.assertRobotNotNull(pos.x, pos.y))
-            layers.getRobotCell(pos.x, pos.y).setRotation(direction.getDirectionID());
+            if(direction==Direction.North)
+                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[1][1]));
+            else if(direction==Direction.West)
+                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[1][0]));
+            else if(direction==Direction.South)
+                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[0][0]));
+            else
+                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[0][1]));
     }
 }

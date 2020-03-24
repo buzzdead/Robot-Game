@@ -29,25 +29,11 @@ public class RobotView implements IRobotView {
 
     @Override
     public void setWinTexture(GridPoint2 pos) {
-        if (this.robotWonCellTexture == null) {
-            this.robotWonCellTexture = new TiledMapTileLayer.Cell();
-            this.robotWonCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[0][1]));
-        }
-        layers.setRobotCell(pos.x, pos.y, this.robotWonCellTexture);
     }
 
     @Override
     public void setLostTexture(GridPoint2 pos) {
-        if (this.robotLostCellTexture == null) {
-            this.robotLostCellTexture = new TiledMapTileLayer.Cell();
-            this.robotLostCellTexture.setTile(new StaticTiledMapTile(this.robotTextureRegion[0][1]));
         }
-        if(layers.assertRobotNotNull(pos.x, pos.y)) {
-            int rotateId = layers.getRobotCell(pos.x, pos.y).getRotation();
-            layers.setRobotCell(pos.x, pos.y, this.robotLostCellTexture);
-            layers.getRobotCell(pos.x, pos.y).setRotation(rotateId);
-        }
-    }
 
     @Override
     public TiledMapTileLayer.Cell getTexture() {

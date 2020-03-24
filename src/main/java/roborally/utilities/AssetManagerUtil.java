@@ -60,21 +60,21 @@ public class AssetManagerUtil {
 
     //Robots
     private static final AssetDescriptor<Texture> RED
-            = new AssetDescriptor<>("robots/redgroup.png", Texture.class);
+            = new AssetDescriptor<>("robots/redgroupTEST.png", Texture.class);
     private static final AssetDescriptor<Texture> BLUE
-            = new AssetDescriptor<>("robots/bluegroup.png", Texture.class);
+            = new AssetDescriptor<>("robots/bluegroupTEST.png", Texture.class);
     private static final AssetDescriptor<Texture> GREEN
-            = new AssetDescriptor<>("robots/greengroup.png", Texture.class);
+            = new AssetDescriptor<>("robots/greengroupTEST.png", Texture.class);
     private static final AssetDescriptor<Texture> YELLOW
-            = new AssetDescriptor<>("robots/yellowgroup.png", Texture.class);
+            = new AssetDescriptor<>("robots/yellowgroupTEST.png", Texture.class);
     private static final AssetDescriptor<Texture> PINK
-            = new AssetDescriptor<>("robots/pinkgroup.png", Texture.class);
+            = new AssetDescriptor<>("robots/pinkgroupTEST.png", Texture.class);
     private static final AssetDescriptor<Texture> PURPLE
-            = new AssetDescriptor<>("robots/purplegroup.png", Texture.class);
+            = new AssetDescriptor<>("robots/purplegroupTEST.png", Texture.class);
     private static final AssetDescriptor<Texture> BROWN
-            = new AssetDescriptor<>("robots/browngroup.png", Texture.class);
+            = new AssetDescriptor<>("robots/browngroupTEST.png", Texture.class);
     private static final AssetDescriptor<Texture> TEAL
-            = new AssetDescriptor<>("robots/tealgroup.png", Texture.class);
+            = new AssetDescriptor<>("robots/tealgroupTEST.png", Texture.class);
     public static ArrayList<Robot> robots;
     private static TiledMap loadedMap;
     private static HashMap<String, TiledMapTileLayer> layers;
@@ -153,14 +153,14 @@ public class AssetManagerUtil {
      */
     public static Texture getRobotTexture(int i) {
         Texture[] robotTexture = new Texture[8];
-        robotTexture[0] = manager.get(BROWN);
-        robotTexture[1] = manager.get(BLUE);
+        robotTexture[7] = manager.get(BROWN);
+        robotTexture[0] = manager.get(BLUE);
         robotTexture[2] = manager.get(GREEN);
         robotTexture[3] = manager.get(TEAL);
         robotTexture[4] = manager.get(PINK);
         robotTexture[5] = manager.get(PURPLE);
         robotTexture[6] = manager.get(RED);
-        robotTexture[7] = manager.get(YELLOW);
+        robotTexture[1] = manager.get(YELLOW);
         return robotTexture[i];
     }
 

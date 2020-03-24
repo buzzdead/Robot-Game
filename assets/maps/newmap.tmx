@@ -46,14 +46,14 @@
    eAFjYBiagH+QOpuW7qKl2QMZnAPpLwBZuAA9
   </data>
  </layer>
- <layer id="13" name="Robot" width="16" height="12">
-  <data encoding="base64" compression="zlib">
-   eAFjYBgFoyEwckMAAAMAAAE=
-  </data>
- </layer>
  <layer id="3" name="Walls" width="16" height="12">
   <data encoding="base64" compression="zlib">
    eAGTYGBgkMeBgcJggEteACgrB1VDDiU+DPSj+xsUJiAACjN0IIEugIXPgUVMFiqmgEVupIc/KExA4YMNw4ILmxxIDBTWADX8BVU=
+  </data>
+ </layer>
+ <layer id="13" name="Robot" width="16" height="12">
+  <data encoding="base64" compression="zlib">
+   eAFjYBgFoyEwckMAAAMAAAE=
   </data>
  </layer>
  <layer id="4" name="Cannon" width="16" height="12">

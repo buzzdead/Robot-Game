@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import roborally.game.Game;
-import roborally.game.IGame;
 import roborally.ui.gdx.events.Events;
 import roborally.ui.gdx.events.LaserEvent;
 import roborally.utilities.AssetManagerUtil;
@@ -29,7 +28,7 @@ public class UI extends InputAdapter implements ApplicationListener {
 
     // Size of tile, both height and width
     public static final int TILE_SIZE = 300;
-    private IGame game;
+    private Game game;
     private TiledMap tiledMap;
     private int mapID;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -72,8 +71,8 @@ public class UI extends InputAdapter implements ApplicationListener {
         tiledMap = AssetManagerUtil.getMap(mapID);
 
         // Start a new game
-        //boolean runAIGame = true;
-        //game = new Game(runAIGame);
+        //boolean runAGame = true;
+        //game = new Game(runAGame);
         game = new Game(this.events);
 
         // Setup controls for the game
@@ -81,7 +80,7 @@ public class UI extends InputAdapter implements ApplicationListener {
 
         // Initialize the camera
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth()+250, Gdx.graphics.getHeight()+150);
+        camera.setToOrtho(false, Gdx.graphics.getWidth() + 250, Gdx.graphics.getHeight() + 150);
         camera.translate(-125, -75);
         camera.update();
         // Initialize the map renderer
@@ -107,7 +106,6 @@ public class UI extends InputAdapter implements ApplicationListener {
         poweredDown.setY(0);
         poweredDown.setX(815);
         poweredDown.setSize(75, 75);
-
     }
 
     @Override

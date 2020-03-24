@@ -24,7 +24,7 @@ import roborally.utilities.enums.TileName;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Game implements IGame {
+public class Game {
     private final boolean DEBUG = true;
 
     //region Game Objects
@@ -61,7 +61,7 @@ public class Game implements IGame {
         layers = gameBoard.getLayers();
     }
 
-    @Override
+
     public void startUp() {
         gameBoard = new GameBoard();
         layers = gameBoard.getLayers();
@@ -71,7 +71,7 @@ public class Game implements IGame {
         //this.AIPlayer = new AIPlayer(robots.get(1), this.gameBoard);
     }
 
-    @Override
+
     public void funMode() {
         gameBoard = new GameBoard();
         layers = gameBoard.getLayers();
@@ -82,7 +82,7 @@ public class Game implements IGame {
         fun = true;
     }
 
-    @Override
+
     public void checkForDestroyedRobots() {
         for (Robot robot : robots) {
             if (("Destroyed").equals(robot.getLogic().getStatus())) {
@@ -99,13 +99,13 @@ public class Game implements IGame {
         this.events.setFadeRobot(fade);
     }
 
-    @Override
+
     public Layers getLayers() {
         return this.layers;
     }
 
     //region Robots
-    @Override
+
     public Robot getFirstRobot() {
 
         if (this.currentRobotID == robots.size()) {
@@ -115,7 +115,7 @@ public class Game implements IGame {
         return robots.get(0);
     }
 
-    @Override
+
     public ArrayList<Robot> getRobots() {
         return this.robots;
     }
@@ -125,7 +125,7 @@ public class Game implements IGame {
     }
     //endregion
 
-    @Override
+
     public void startGame() {
         assert (!gameRunning);
         if (DEBUG) {
@@ -135,7 +135,7 @@ public class Game implements IGame {
         startNewRound();
     }
 
-    @Override
+
     public void restartGame() {
         System.out.println("Restarting game...");
         for (Robot robot : robots) {
@@ -145,7 +145,7 @@ public class Game implements IGame {
     }
 
     //region Rounds
-    @Override
+
     public void startNewRound() {
         assert (gameRunning);
         assert (roundStep == RoundStep.NULL_STEP);
@@ -160,23 +160,23 @@ public class Game implements IGame {
         }
     }
 
-    @Override
+
     public RoundStep currentRoundStep() {
         return roundStep;
     }
     //endregion
 
-    @Override
+
     public boolean isRunning() {
         return gameRunning;
     }
 
-    @Override
+
     public GameOptions getGameOptions() {
         return this.gameOptions;
     }
 
-    @Override
+
     public PhaseStep currentPhaseStep() {
         return phaseStep;
     }
@@ -188,7 +188,7 @@ public class Game implements IGame {
         phaseStep = PhaseStep.NULL_PHASE;
     }
 
-    @Override
+
     public void fireLaser() {
         Sound sound = AssetManagerUtil.manager.get(AssetManagerUtil.SHOOT_LASER);
         sound.play((float) 0.08 * AssetManagerUtil.volume);
@@ -218,7 +218,7 @@ public class Game implements IGame {
     }
 
     //region Cards
-    @Override
+
     public ProgramCardsView getCards() {
         //TODO Refactor for readability
         checkForDestroyedRobots();
@@ -268,7 +268,7 @@ public class Game implements IGame {
         return programCardsView;
     }
 
-    @Override
+
     public void playNextCard() {
         Robot robot = getRobots().get(currentRobotID);
         if (isNotInGraveyard(robot)) {
@@ -282,19 +282,27 @@ public class Game implements IGame {
     private void incrementCurrentRobotID() {
         currentRobotID++;
         if (currentRobotID == getRobots().size()) {
-           /* moveExpressConveyorBelts();
+            moveExpressConveyorBelts();
             moveAllConveyorBelts();
             moveCogs();
             pushActivePushers();
-            registerFlagPositions();*/
+            registerFlagPositions();
             currentRobotID = 0;
         }
     }
 
-    private void pushActivePushers() {
-        
+    public void testEndPhase() {
+        moveExpressConveyorBelts();
+        moveAllConveyorBelts();
+        moveCogs();
+        pushActivePushers();
+        registerFlagPositions();
     }
-    
+
+    private void pushActivePushers() {
+
+    }
+
     public void addPushers() {
         for (int i = 0; i < layers.getWidth(); i++) {
             for (int j = 0; j < layers.getWidth(); j++) {
@@ -306,7 +314,7 @@ public class Game implements IGame {
         return !robot.getPosition().equals(SettingsUtil.GRAVEYARD);
     }
 
-    @Override
+
     public void shuffleTheRobotsCards(int[] order) {
         robots.get(0).getLogic().arrangeCards(order);
     }
@@ -315,61 +323,77 @@ public class Game implements IGame {
     // Might consider adding this to a wait event once we get it to function properly.
     // Have to have its own move method, moving the robot first in the line first and so on.
     // Additionally, I think the check for lasers are supposed to happen after all of this.
-    @Override
+
     public void moveAllConveyorBelts() {
         moveExpressConveyorBelts();
         moveNormalConveyorBelts();
     }
 
-    @Override
+    public void rotateConveyorBelts(ArrayList<Robot> rotateRobots) {
+        TileName tileName;
+        for (Robot robot : rotateRobots) {
+            if (layers.assertConveyorSlowNotNull(robot.getPosition()))
+                tileName = layers.getConveyorSlowTileName(robot.getPosition());
+            else
+                tileName = layers.getConveyorFastTileName(robot.getPosition());
+            if (tileName.toString().contains("COUNTER_CLOCKWISE"))
+                robot.rotate(Direction.turnLeftFrom(robot.getLogic().getDirection()));
+            else if (tileName.toString().contains("CLOCKWISE"))
+                robot.rotate(Direction.turnRightFrom(robot.getLogic().getDirection()));
+        }
+    }
+
     public void moveNormalConveyorBelts() {
+        ArrayList<Robot> rotateRobots = new ArrayList<>();
         for (Robot robot : robots) {
             GridPoint2 pos = robot.getPosition();
             if (layers.assertConveyorSlowNotNull(pos)) {
                 TileName tileName = layers.getConveyorSlowTileName(pos);
 
                 // Move in a special way so that no collision happens.
-                if (tileName == TileName.CONVEYOR_RIGHT)
+                if (tileName == TileName.CONVEYOR_RIGHT || tileName.toString().contains("TO_EAST") || tileName.toString().contains("JOIN_EAST"))
                     robot.moveRobot(new GridPoint2(1, 0));
-                else if (tileName == TileName.CONVEYOR_NORTH)
+                else if (tileName == TileName.CONVEYOR_NORTH || tileName.toString().contains("TO_NORTH") || tileName.toString().contains("JOIN_NORTH"))
                     robot.moveRobot(new GridPoint2(0, 1));
-                else if (tileName == TileName.CONVEYOR_LEFT)
+                else if (tileName == TileName.CONVEYOR_LEFT || tileName.toString().contains("TO_WEST") || tileName.toString().contains("JOIN_WEST"))
                     robot.moveRobot(new GridPoint2(-1, 0));
-                else if (tileName == TileName.CONVEYOR_SOUTH)
+                else if (tileName == TileName.CONVEYOR_SOUTH || tileName.toString().contains("TO_SOUTH") || tileName.toString().contains("JOIN_SOUTH"))
                     robot.moveRobot(new GridPoint2(0, -1));
-                robot.checkForLaser();
+                rotateRobots.add(robot);
             }
         }
+        if (!rotateRobots.isEmpty())
+            rotateConveyorBelts(rotateRobots);
     }
 
-    @Override
+
     public void moveExpressConveyorBelts() {
+        ArrayList<Robot> rotateRobots = new ArrayList<>();
         for (Robot robot : robots) {
             GridPoint2 pos = robot.getPosition();
             if (layers.assertConveyorFastNotNull(pos)) {
                 TileName tileName = layers.getConveyorFastTileName(pos);
 
                 // Move in a special way so that no collision happens.
-                if (tileName == TileName.CONVEYOR_EXPRESS_EAST)
+                if (tileName == TileName.CONVEYOR_EXPRESS_EAST || tileName.toString().contains("TO_EAST") || tileName.toString().contains("JOIN_EAST"))
                     robot.moveRobot(new GridPoint2(1, 0));
-                else if (tileName == TileName.CONVEYOR_EXPRESS_NORTH)
+                else if (tileName == TileName.CONVEYOR_EXPRESS_NORTH || tileName.toString().contains("TO_NORTH") || tileName.toString().contains("JOIN_NORTH"))
                     robot.moveRobot(new GridPoint2(0, 1));
-                else if (tileName == TileName.CONVEYOR_EXPRESS_WEST)
+                else if (tileName == TileName.CONVEYOR_EXPRESS_WEST || tileName.toString().contains("TO_WEST") || tileName.toString().contains("JOIN_WEST"))
                     robot.moveRobot(new GridPoint2(-1, 0));
-                else if (tileName == TileName.CONVEYOR_EXPRESS_SOUTH)
+                else if (tileName == TileName.CONVEYOR_EXPRESS_SOUTH || tileName.toString().contains("TO_SOUTH") || tileName.toString().contains("JOIN_SOUTH"))
                     robot.moveRobot(new GridPoint2(0, -1));
-                robot.checkForLaser();
-            }
-            if (layers.assertPusherNotNull(pos)) {
-                robot.moveRobot(new GridPoint2(1, 0));
+                rotateRobots.add(robot);
             }
         }
+        if (!rotateRobots.isEmpty())
+            rotateConveyorBelts(rotateRobots);
     }
     //endregion
 
     // Uncertain how to do this, maybe add the position of the gear into a list related to if its a rotate right
     // or rotate left gear?
-    @Override
+
     public void moveCogs() {
         for (Robot robot : robots) {
             GridPoint2 pos = robot.getPosition();
@@ -380,10 +404,11 @@ public class Game implements IGame {
                 else if (tileName == TileName.COG_COUNTER_CLOCKWISE)
                     robot.rotate(robot.rotate(Direction.turnRightFrom(robot.getLogic().getDirection())));
             }
+            robot.checkForLaser();
         }
     }
 
-    @Override
+
     public void fireLasers() {
         Sound sound = AssetManagerUtil.manager.get(AssetManagerUtil.SHOOT_LASER);
         sound.play((float) 0.08 * AssetManagerUtil.volume);
@@ -396,12 +421,12 @@ public class Game implements IGame {
         // TODO: Implement the corresponding phase.
     }
 
-    @Override
+
     public void allowMovingBackupPoints() {
         // TODO: Implement the corresponding phase.
     }
 
-    @Override
+
     public void registerFlagPositions() {
         System.out.println("\nChecking if any robots have currently arrived at their next flag position...");
         for (Flag flag : flags) {
@@ -422,7 +447,7 @@ public class Game implements IGame {
         }
     }
 
-    @Override
+
     public boolean checkIfSomeoneWon() {
         assert (gameRunning);
         assert (roundStep == RoundStep.PHASES);
@@ -471,12 +496,12 @@ public class Game implements IGame {
         return true;
     }
 
-    @Override
+
     public Robot getWinner() {
         return winner;
     }
 
-    @Override
+
     public void endGame() {
         assert (gameRunning);
         //if(DEBUG){
@@ -491,12 +516,12 @@ public class Game implements IGame {
         gameRunning = false;
     }
 
-    @Override
+
     public void exitGame() {
         Gdx.app.exit();
     }
 
-    @Override
+
     public void moveRobots() {
         Random r = new Random();
         int m;
@@ -513,22 +538,22 @@ public class Game implements IGame {
         }
     }
 
-    @Override
+
     public void revealProgramCards() {
         // TODO: Implement simple method to make some use of our ProgramCards class.
     }
 
-    @Override
+
     public void programRobots() {
         // TODO: Implement some simple method to make some use of ProgramCards.
     }
 
-    @Override
+
     public void dealCards() {
         // TODO: Implement some simple method to make some use of ProgramCards.
     }
 
-    @Override
+
     public void announcePowerDown() {
         // TODO: Implement some damage system.
     }

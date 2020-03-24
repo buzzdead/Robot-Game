@@ -1,7 +1,7 @@
 package roborally.utilities.controls;
 
 import com.badlogic.gdx.Input;
-import roborally.game.IGame;
+import roborally.game.Game;
 import roborally.utilities.enums.Direction;
 
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class ControlsDebug implements IControls {
     private HashMap<Integer, Runnable> menuControlMap;
 
-    public ControlsDebug(IGame game) {
+    public ControlsDebug(Game game) {
         menuControlMap = new HashMap<>();
         menuControlMap.put(Input.Keys.UP, () -> game.getFirstRobot().move(1));
         menuControlMap.put(Input.Keys.DOWN, () -> game.getFirstRobot().move(-1));
@@ -23,6 +23,7 @@ public class ControlsDebug implements IControls {
         menuControlMap.put(Input.Keys.A, game::fireLasers);
         menuControlMap.put(Input.Keys.M, game.getGameOptions()::enterMenu);
         menuControlMap.put(Input.Keys.O, game::playNextCard);
+        menuControlMap.put(Input.Keys.T, game::testEndPhase);
     }
 
     @Override

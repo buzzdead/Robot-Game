@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import roborally.game.IGame;
+import roborally.game.Game;
 import roborally.game.objects.robot.Robot;
 
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class Events {
      * @param dt   Time lapsed between frames.
      * @param game The game.
      */
-    public void waitMoveEvent(float dt, IGame game) {
+    public void waitMoveEvent(float dt, Game game) {
         this.dt += dt;
         if (this.dt >= gameSpeed) {
             game.playNextCard();

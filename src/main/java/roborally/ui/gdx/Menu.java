@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import roborally.game.IGame;
+import roborally.game.Game;
 import roborally.ui.gdx.events.Events;
 import roborally.utilities.AssetManagerUtil;
 
@@ -316,7 +316,7 @@ public class Menu {
         volumeSlider.setPosition(750, 600);
     }
 
-    public boolean isResume(IGame game) {
+    public boolean isResume(Game game) {
         if (Continue) {
             Continue = false;
             resume = false;

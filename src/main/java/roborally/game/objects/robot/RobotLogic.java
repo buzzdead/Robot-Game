@@ -13,7 +13,7 @@ public class RobotLogic implements Programmable {
     private GridPoint2 robotPosition;
     private GridPoint2 checkPoint;
     private int health = 10;
-    private int reboots = 3;
+    private int reboots = 0;
     private Direction direction;
     private CardsInHand cardsInHand;
     private Queue<IProgramCards.Card> nextCard;

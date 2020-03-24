@@ -93,7 +93,7 @@ public class Game implements IGame {
     }
 
     private void removeFromUI(Robot robot, boolean fade) {
-        events.fadeRobot(robot.getPosition(), robot.getTexture());
+        events.fadeRobot(robot.getPosition(), robot.getTexture(), robot.getCurrentTexture());
         robot.deleteRobot();
         System.out.println("yeah2");
         this.events.setFadeRobot(fade);
@@ -282,11 +282,11 @@ public class Game implements IGame {
     private void incrementCurrentRobotID() {
         currentRobotID++;
         if (currentRobotID == getRobots().size()) {
-            moveExpressConveyorBelts();
+           /* moveExpressConveyorBelts();
             moveAllConveyorBelts();
             moveCogs();
             pushActivePushers();
-            registerFlagPositions();
+            registerFlagPositions();*/
             currentRobotID = 0;
         }
     }

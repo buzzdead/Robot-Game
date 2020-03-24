@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import roborally.game.IGame;
+import roborally.game.objects.robot.Robot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,17 +92,18 @@ public class Events {
     public void setPauseEvent(boolean value) {
         this.waitEvent = value;
     }
+
     /**
      * Replaces the robots texture with an image and fades it.
      *
      * @param pos     The robots position.
      * @param texture The robots texture.
      */
-    public void fadeRobot(GridPoint2 pos, TextureRegion[][] texture) {
-        Image image = new Image(texture[0][0]);
+    public void fadeRobot(GridPoint2 pos, TextureRegion[][] texture, GridPoint2 currentTexture) {
+        Image image = new Image(texture[currentTexture.x][currentTexture.y]);
         image.setX((pos.x + 2.24f) * unitScale * xDiff);
         image.setY((pos.y + 1.3f) * unitScale * yDiff);
-        image.setSize(unitScale * xDiff, unitScale* yDiff);
+        image.setSize(unitScale * xDiff, unitScale * yDiff);
         this.fadeableRobots.add(new Alpha(1f, image));
     }
 
@@ -146,7 +148,7 @@ public class Events {
             if (laserEvent.getRobot() != null) {
                 if (("Destroyed".equals(laserEvent.getRobot().getLogic().getStatus()))) {
                     GridPoint2 pos = laserEvent.getRobot().getPosition();
-                    fadeRobot(pos, laserEvent.getRobot().getTexture());
+                    fadeRobot(pos, laserEvent.getRobot().getTexture(), laserEvent.getRobot().getCurrentTexture());
                     laserEvent.getRobot().deleteRobot();
                     setFadeRobot(true);
                 } else {
@@ -167,6 +169,18 @@ public class Events {
     public void createNewLaserEvent(GridPoint2 origin, GridPoint2 pos) {
         this.laserEvents.add(new LaserEvent(factor));
         this.laserEvents.get(this.laserEvents.size() - 1).laserEvent(origin, pos);
+    }
+
+    public void drawRobots(ArrayList<Robot> robots, SpriteBatch batch) {
+        for (Robot robot : robots) {
+            GridPoint2 currentTexture = robot.getCurrentTexture();
+            GridPoint2 pos = robot.getPosition();
+            Image image = new Image(robot.getTexture()[currentTexture.x][currentTexture.y]);
+            image.setX((pos.x + 2.24f) * unitScale * xDiff);
+            image.setY((pos.y + 1.3f) * unitScale * yDiff);
+            image.setSize(unitScale * xDiff, unitScale * yDiff);
+            image.draw(batch, 1);
+        }
     }
 
     private static class Alpha {

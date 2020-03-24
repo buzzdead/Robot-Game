@@ -13,11 +13,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import roborally.game.Game;
 import roborally.game.IGame;
 import roborally.ui.gdx.events.Events;
@@ -90,7 +89,7 @@ public class UI extends InputAdapter implements ApplicationListener {
         mapRenderer.setView(camera);
         Gdx.input.setInputProcessor(this);
         batch = new SpriteBatch();
-        stage = new Stage();
+        stage = new Stage(new FitViewport(SettingsUtil.WINDOW_WIDTH, SettingsUtil.WINDOW_HEIGHT));
 
         menu = new Menu(stage, events);
         bar = new Image(new Texture("assets/bar.png"));
@@ -99,7 +98,8 @@ public class UI extends InputAdapter implements ApplicationListener {
         bar3 = new Image(new Texture("assets/bar2.png"));
         bar2.setHeight(675);
         bar3.setHeight(675);
-        bar3.setPosition(675+125, 0);
+        System.out.println(Gdx.graphics.getWidth());
+        bar3.setPosition(Gdx.graphics.getWidth() - 100, 0);
         game.getGameOptions().enterMenu(true);
         bar4 = new Image(new Texture("assets/bar.png"));
         bar4.setHeight(62);
@@ -131,7 +131,9 @@ public class UI extends InputAdapter implements ApplicationListener {
             pause();
         }
         batch.begin();
-        if(!paused) {
+        if (!paused)
+            events.drawRobots(game.getRobots(), batch);
+        if (!paused) {
             bar.draw(batch, 1);
             bar2.draw(batch, 1);
             bar3.draw(batch, 1);
@@ -152,15 +154,7 @@ public class UI extends InputAdapter implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
-        // Maybe this can help us run the game even on smaller screen than Tim Cooks.
-        Vector2 size = Scaling.fit.apply(SettingsUtil.WINDOW_WIDTH, SettingsUtil.WINDOW_HEIGHT, width, height);
-        int viewportX = (int) (width - size.x) / 2;
-        int viewportY = (int) (height - size.y) / 2;
-        int viewportWidth = (int) size.x;
-        int viewportHeight = (int) size.y;
-        Gdx.gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
         stage.getViewport().update(width, height, true);
-        //stage.setViewport(800, 480, true, viewportX, viewportY, viewportWidth, viewportHeight);
     }
 
     @Override

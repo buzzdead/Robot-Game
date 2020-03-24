@@ -48,4 +48,6 @@ public interface IRobotView {
      * @param robotID The id of the position of the cell texture
      */
     void setTextureRegion(int robotID);
+
+    GridPoint2 getCurrentTexture();
 }

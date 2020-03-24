@@ -13,17 +13,21 @@ public class RobotView implements IRobotView {
     private TiledMapTileLayer.Cell robotWonCellTexture;
     private TiledMapTileLayer.Cell robotLostCellTexture;
     private TextureRegion[][] robotTextureRegion;
+    private TextureRegion[][] tr;
     private TiledMapTileLayer.Cell robotDefaultCellTexture;
     private Layers layers;
     private GridPoint2 pos;
     private int height;
     private int width;
+    private GridPoint2 currentTexture;
+    private int robotID;
 
     public RobotView(GridPoint2 pos) {
         this.pos = pos;
         this.layers = new Layers();
         this.height = layers.getHeight();
         this.width = layers.getWidth();
+        currentTexture = new GridPoint2(0, 0);
     }
 
     @Override
@@ -36,10 +40,14 @@ public class RobotView implements IRobotView {
 
     @Override
     public TiledMapTileLayer.Cell getTexture() {
+        tr = TextureRegion.split(AssetManagerUtil.getRobotTexture(robotID), 250, 300);
+
         if (this.robotDefaultCellTexture == null) {
             this.robotDefaultCellTexture = new TiledMapTileLayer.Cell();
-            this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[1][1]));
+            this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(tr[1][1]));
+            this.currentTexture.set(1, 1);
         }
+        this.robotDefaultCellTexture.getTile().getTextureRegion().setRegion(0, 0, 0, 0);
         return this.robotDefaultCellTexture;
     }
 
@@ -49,7 +57,13 @@ public class RobotView implements IRobotView {
     }
 
     @Override
+    public GridPoint2 getCurrentTexture() {
+        return this.currentTexture;
+    }
+
+    @Override
     public void setTextureRegion(int robotID) {
+        this.robotID = robotID;
         this.robotTextureRegion = TextureRegion.split(AssetManagerUtil.getRobotTexture(robotID), 250, 300);
         layers.setRobotCell(this.pos, getTexture());
     }
@@ -76,13 +90,19 @@ public class RobotView implements IRobotView {
     @Override
     public void setDirection(GridPoint2 pos, Direction direction) {
         if (layers.assertRobotNotNull(pos))
-            if (direction == Direction.North)
-                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[1][1]));
-            else if (direction == Direction.West)
-                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[1][0]));
-            else if (direction == Direction.South)
-                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[0][0]));
-            else
-                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[0][1]));
+            if (direction == Direction.North) {
+                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(tr[1][1]));
+                this.currentTexture.set(1, 1);
+            } else if (direction == Direction.West) {
+                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(tr[1][0]));
+                this.currentTexture.set(1, 0);
+            } else if (direction == Direction.South) {
+                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(tr[0][0]));
+                this.currentTexture.set(0, 0);
+            } else {
+                this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(tr[0][1]));
+                this.currentTexture.set(0, 1);
+            }
+        this.robotDefaultCellTexture.getTile().getTextureRegion().setRegion(0, 0, 0, 0);
     }
 }

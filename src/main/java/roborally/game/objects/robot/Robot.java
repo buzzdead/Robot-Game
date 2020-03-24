@@ -224,4 +224,8 @@ public class Robot implements Programmable {
     public void clearRegister() {
         laserRegister.updateLaser(getName(), getPosition());
     }
+
+    public GridPoint2 getCurrentTexture() {
+        return robotView.getCurrentTexture();
+    }
 }

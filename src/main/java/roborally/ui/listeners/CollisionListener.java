@@ -24,7 +24,7 @@ public class CollisionListener {
     public boolean robotNextToRobot(GridPoint2 pos, GridPoint2 move) {
         int width = layers.getWidth();
         int height = layers.getHeight();
-        GridPoint2 nextPos = pos.add(move);
+        GridPoint2 nextPos = pos.cpy().add(move);
         boolean recursiveRobot = false;
         if (wallListener.checkForWall(pos, move))
             return true;

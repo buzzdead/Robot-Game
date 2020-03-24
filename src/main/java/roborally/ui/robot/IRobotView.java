@@ -28,11 +28,9 @@ public interface IRobotView {
     /**
      * Checks if it's possible to move robot.
      *
-     * @param x the x coordinate
-     * @param y the y coordinate
      * @return True if its made its move else false if its on the edge of the map.
      */
-    boolean moveRobot(int x, int y, int dx, int dy);
+    boolean moveRobot(GridPoint2 pos, GridPoint2 move);
 
     /**
      * @param pos       the Position

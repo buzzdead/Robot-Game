@@ -5,7 +5,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.GridPoint2;
 import roborally.ui.Layers;
-import roborally.ui.gdx.UI;
 import roborally.utilities.AssetManagerUtil;
 import roborally.utilities.enums.Direction;
 
@@ -20,8 +19,8 @@ public class RobotView implements IRobotView {
     private int height;
     private int width;
 
-    public RobotView(int x, int y) {
-        this.pos = new GridPoint2(x, y);
+    public RobotView(GridPoint2 pos) {
+        this.pos = pos;
         this.layers = new Layers();
         this.height = layers.getHeight();
         this.width = layers.getWidth();
@@ -52,16 +51,15 @@ public class RobotView implements IRobotView {
     @Override
     public void setTextureRegion(int robotID) {
         this.robotTextureRegion = TextureRegion.split(AssetManagerUtil.getRobotTexture(robotID), 250, 300);
-        layers.setRobotCell(this.pos.x, this.pos.y, getTexture());
+        layers.setRobotCell(this.pos, getTexture());
     }
 
     @Override
-    public boolean moveRobot(int x, int y, int dx, int dy) {
-        int newX = x + dx;
-        int newY = y + dy;
-        if ((newX >= 0) && (newY >= 0) && (newX < width) && (newY < height)) {
-            layers.setRobotCell(newX, newY, getTexture());
-            layers.setRobotCell(x, y, null);
+    public boolean moveRobot(GridPoint2 pos, GridPoint2 move) {
+        GridPoint2 newPos = pos.cpy().add(move);
+        if ((newPos.x >= 0) && (newPos.y >= 0) && (newPos.x < width) && (newPos.y < height)) {
+            layers.setRobotCell(newPos, getTexture());
+            layers.setRobotCell(pos, null);
             return true;
         }
         return false;
@@ -69,20 +67,20 @@ public class RobotView implements IRobotView {
 
     @Override
     public void goToCheckPoint(GridPoint2 pos, GridPoint2 checkPoint) {
-        layers.setRobotCell(checkPoint.x, checkPoint.y, getTexture());
-        layers.getRobotCell(checkPoint.x, checkPoint.y).setRotation(0);
+        layers.setRobotCell(checkPoint, getTexture());
+        layers.getRobotCell(checkPoint).setRotation(0);
         if (!pos.equals(checkPoint))
-            layers.setRobotCell(pos.x, pos.y, null);
+            layers.setRobotCell(pos, null);
     }
 
     @Override
     public void setDirection(GridPoint2 pos, Direction direction) {
-        if (layers.assertRobotNotNull(pos.x, pos.y))
-            if(direction==Direction.North)
+        if (layers.assertRobotNotNull(pos))
+            if (direction == Direction.North)
                 this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[1][1]));
-            else if(direction==Direction.West)
+            else if (direction == Direction.West)
                 this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[1][0]));
-            else if(direction==Direction.South)
+            else if (direction == Direction.South)
                 this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[0][0]));
             else
                 this.robotDefaultCellTexture.setTile(new StaticTiledMapTile(robotTextureRegion[0][1]));

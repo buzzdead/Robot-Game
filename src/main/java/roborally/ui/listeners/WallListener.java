@@ -1,5 +1,6 @@
 package roborally.ui.listeners;
 
+import com.badlogic.gdx.math.GridPoint2;
 import roborally.ui.Layers;
 import roborally.utilities.enums.TileName;
 import roborally.utilities.tiledtranslator.TiledTranslator;
@@ -23,35 +24,32 @@ public class WallListener {
      * A method that looks through the respective ID's from the tileset, for relevant walls for the robot as it
      * tries to move.
      *
-     * @param x  the x position
-     * @param y  the y position
-     * @param dx steps taken in x-direction
-     * @param dy steps taken in y-direction
      * @return True if it finds a wall that corresponds to a wall in x or y direction that blocks the robot.
      */
-    public boolean checkForWall(int x, int y, int dx, int dy) {
+    public boolean checkForWall(GridPoint2 pos, GridPoint2 move) {
         boolean wall = false;
         TileName wallName;
-        if (layers.assertWallNotNull(x, y)) {
-            wallName = tiledTranslator.getTileName(layers.getWallID(x, y));
-            if (dy > 0)
+        if (layers.assertWallNotNull(pos)) {
+            wallName = tiledTranslator.getTileName(layers.getWallID(pos));
+            if (move.y > 0)
                 wall = mapOfWallNames.get("North").contains(wallName);
-            else if (dy < 0)
+            else if (move.y < 0)
                 wall = mapOfWallNames.get("South").contains(wallName);
-            else if (dx > 0)
+            else if (move.x > 0)
                 wall = mapOfWallNames.get("East").contains(wallName);
-            else if (dx < 0)
+            else if (move.x < 0)
                 wall = mapOfWallNames.get("West").contains(wallName);
         }
-        if (layers.assertWallNotNull(x + dx, y + dy) && !wall) {
-            wallName = tiledTranslator.getTileName(layers.getWallID(x + dx, y + dy));
-            if (dy > 0)
+        GridPoint2 nextPos = pos.cpy().add(move);
+        if (layers.assertWallNotNull(nextPos) && !wall) {
+            wallName = tiledTranslator.getTileName(layers.getWallID(nextPos));
+            if (move.y > 0)
                 return mapOfWallNames.get("South").contains(wallName);
-            else if (dy < 0)
+            else if (move.y < 0)
                 return mapOfWallNames.get("North").contains(wallName);
-            else if (dx > 0)
+            else if (move.x > 0)
                 return mapOfWallNames.get("West").contains(wallName);
-            else if (dx < 0)
+            else if (move.x < 0)
                 return mapOfWallNames.get("East").contains(wallName);
         }
         return wall;

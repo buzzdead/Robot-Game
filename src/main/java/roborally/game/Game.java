@@ -14,7 +14,6 @@ import roborally.game.objects.robot.Robot;
 import roborally.ui.Layers;
 import roborally.ui.gdx.ProgramCardsView;
 import roborally.ui.gdx.events.Events;
-import roborally.ui.listeners.CollisionListener;
 import roborally.utilities.AssetManagerUtil;
 import roborally.utilities.SettingsUtil;
 import roborally.utilities.enums.Direction;
@@ -293,7 +292,6 @@ public class Game implements IGame {
     }
 
     private void pushActivePushers() {
-        CollisionListener collisionListener = new CollisionListener(layers);
         
     }
     
@@ -327,18 +325,18 @@ public class Game implements IGame {
     public void moveNormalConveyorBelts() {
         for (Robot robot : robots) {
             GridPoint2 pos = robot.getPosition();
-            if (layers.assertConveyorSlowNotNull(pos.x, pos.y)) {
+            if (layers.assertConveyorSlowNotNull(pos)) {
                 TileName tileName = layers.getConveyorSlowTileName(pos);
 
                 // Move in a special way so that no collision happens.
                 if (tileName == TileName.CONVEYOR_RIGHT)
-                    robot.moveRobot(1, 0);
+                    robot.moveRobot(new GridPoint2(1, 0));
                 else if (tileName == TileName.CONVEYOR_NORTH)
-                    robot.moveRobot(0, 1);
+                    robot.moveRobot(new GridPoint2(0, 1));
                 else if (tileName == TileName.CONVEYOR_LEFT)
-                    robot.moveRobot(-1, 0);
+                    robot.moveRobot(new GridPoint2(-1, 0));
                 else if (tileName == TileName.CONVEYOR_SOUTH)
-                    robot.moveRobot(0, -1);
+                    robot.moveRobot(new GridPoint2(0, -1));
                 robot.checkForLaser();
             }
         }
@@ -348,19 +346,22 @@ public class Game implements IGame {
     public void moveExpressConveyorBelts() {
         for (Robot robot : robots) {
             GridPoint2 pos = robot.getPosition();
-            if (layers.assertConveyorFastNotNull(pos.x, pos.y)) {
+            if (layers.assertConveyorFastNotNull(pos)) {
                 TileName tileName = layers.getConveyorFastTileName(pos);
 
                 // Move in a special way so that no collision happens.
                 if (tileName == TileName.CONVEYOR_EXPRESS_EAST)
-                    robot.moveRobot(1, 0);
+                    robot.moveRobot(new GridPoint2(1, 0));
                 else if (tileName == TileName.CONVEYOR_EXPRESS_NORTH)
-                    robot.moveRobot(0, 1);
+                    robot.moveRobot(new GridPoint2(0, 1));
                 else if (tileName == TileName.CONVEYOR_EXPRESS_WEST)
-                    robot.moveRobot(-1, 0);
+                    robot.moveRobot(new GridPoint2(-1, 0));
                 else if (tileName == TileName.CONVEYOR_EXPRESS_SOUTH)
-                    robot.moveRobot(0, -1);
+                    robot.moveRobot(new GridPoint2(0, -1));
                 robot.checkForLaser();
+            }
+            if (layers.assertPusherNotNull(pos)) {
+                robot.moveRobot(new GridPoint2(1, 0));
             }
         }
     }
@@ -413,7 +414,7 @@ public class Game implements IGame {
                     int nextFlag = robot.getNextFlag();
                     if (flag.getID() == nextFlag) {
                         robot.visitNextFlag();
-                        robot.getLogic().setCheckPoint(flagX, flagY);
+                        robot.getLogic().setCheckPoint(new GridPoint2(flagX, flagY));
                         System.out.println("A flag has been visited");
                     }
                 }
@@ -482,7 +483,7 @@ public class Game implements IGame {
         //System.out.println("Stopping game...");
         //}
         for (Robot robot : robots) {
-            layers.setRobotCell(robot.getPosition().x, robot.getPosition().y, null);
+            layers.setRobotCell(robot.getPosition(), null);
             removeFromUI(robot, true);
         }
         robots.clear();

@@ -20,15 +20,15 @@ public class Listener {
         // Adding a move listener to listen to them all in one swoop.
     }
 
-    public void listenWall(int x, int y, int dx, int dy) {
-        wallListener.checkForWall(x, y, dx, dy);
+    public void listenWall(GridPoint2 pos, GridPoint2 move) {
+        wallListener.checkForWall(pos, move);
     }
 
-    public boolean listenCollision(int x, int y, int dx, int dy) {
-        return collisionListener.checkIfBlocked(x, y, dx, dy);
+    public boolean listenCollision(GridPoint2 pos, GridPoint2 move) {
+        return collisionListener.checkIfBlocked(pos, move);
     }
 
-    public boolean listenLaser(int x, int y, String name, LaserRegister laserRegister) {
-        return this.laserListener.checkForLasers(x, y, name, laserRegister);
+    public boolean listenLaser(GridPoint2 pos, String name, LaserRegister laserRegister) {
+        return this.laserListener.checkForLasers(pos, name, laserRegister);
     }
 }

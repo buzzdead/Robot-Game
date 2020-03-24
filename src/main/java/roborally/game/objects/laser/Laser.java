@@ -59,26 +59,23 @@ public class Laser {
      * Shoots a laser until it hits a wall or a robot. Stores the cells for clearing them after.
      * {@link #setDirection(int robotDirection)} to figure out the iterative values to shoot with.
      *
-     * @param robotPosition  The position of the robot that is shooting the laser.
      * @param robotDirection The robotDirection the robot is looking.
      */
-    public void fireLaser(GridPoint2 robotPosition, int robotDirection) {
+    public void fireLaser(GridPoint2 pos, int robotDirection) {
         clearLaser();
         this.laserEndPositions.clear();
         this.storedLaserCell = getLaser(robotDirection);
-        int[] direction = setDirection(robotDirection);
-        int x = robotPosition.x + direction[0];
-        int y = robotPosition.y + direction[1];
+        GridPoint2 direction = setDirection(robotDirection);
+        GridPoint2 newPos = pos.cpy().add(direction);
 
-        if (this.wallListener.checkForWall(robotPosition.x, robotPosition.y, direction[0], direction[1]))
+        if (this.wallListener.checkForWall(pos, direction))
             return;
-        while (x >= 0 && x < layers.getWidth() && y >= 0 && y < this.layers.getHeight()) {
-            this.laserEndPositions.add(new GridPoint2(x, y));
-            if (this.wallListener.checkForWall(x, y, direction[0], direction[1]) || this.layers.assertRobotNotNull(x, y)) {
+        while (newPos.x >= 0 && newPos.x < layers.getWidth() && newPos.y >= 0 && newPos.y < this.layers.getHeight()) {
+            this.laserEndPositions.add(newPos);
+            if (this.wallListener.checkForWall(newPos, direction) || this.layers.assertRobotNotNull(newPos)) {
                 break;
             }
-            x = x + direction[0];
-            y = y + direction[1];
+            newPos.add(direction);
         }
     }
 
@@ -88,7 +85,7 @@ public class Laser {
      * @param robotDirection The robotDirection the robot is facing
      * @return an array with values that determines which robotDirection the laser is being fired.
      */
-    public int[] setDirection(int robotDirection) {
+    public GridPoint2 setDirection(int robotDirection) {
         int dx = 0;
         int dy = 0;
         if (robotDirection == 0)
@@ -99,7 +96,7 @@ public class Laser {
             dy = -1;
         else if (robotDirection == 3)
             dx = 1;
-        return new int[]{dx, dy};
+        return new GridPoint2(dx, dy);
     }
 
     /**
@@ -119,7 +116,6 @@ public class Laser {
             storedLaserCell = getLaser(2);
             cannonId = findVertical();
         }
-        laserEndPositions.add(robotsOrigin);
         this.cannonTileID = cannonId;
     }
 
@@ -130,13 +126,12 @@ public class Laser {
      * @return cannonId
      */
     public int findHorizontal() {
-        // FIXME: Generic names, needs to be more specific
         int i = robotsOrigin.x + 1;
         int j = robotsOrigin.x - 1;
         int k = robotsOrigin.y;
 
-        while (i < layers.getWidth() && layers.assertLaserNotNull(i, k)) i++;
-        while (j >= 0 && layers.assertLaserNotNull(j, k)) j--;
+        while (i < layers.getWidth() && layers.assertLaserNotNull(new GridPoint2(i, k))) i++;
+        while (j >= 0 && layers.assertLaserNotNull(new GridPoint2(j, k))) j--;
 
         cannonTileID = findCannon(i, j, k);
 
@@ -152,7 +147,7 @@ public class Laser {
             this.cannonPos.set(i + dx, k);
             do {
                 laserEndPositions.add(new GridPoint2(i += dx, k));
-            } while (!wallListener.checkForWall(i, k, dx, 0) && i >= 0 && i <= layers.getWidth());
+            } while (!wallListener.checkForWall(new GridPoint2(i, k), new GridPoint2(dx, 0)) && i >= 0 && i <= layers.getWidth());
         }
         return cannonTileID;
     }
@@ -164,13 +159,12 @@ public class Laser {
      * @return cannonId
      */
     public int findVertical() {
-        // FIXME: Generic names, needs to be more specific
         int i = robotsOrigin.y + 1;
         int j = robotsOrigin.y - 1;
         int k = robotsOrigin.x;
 
-        while (i < layers.getHeight() && layers.assertLaserNotNull(k, i)) i++;
-        while (j >= 0 && layers.assertLaserNotNull(k, j)) j--;
+        while (i < layers.getHeight() && layers.assertLaserNotNull(new GridPoint2(k, i))) i++;
+        while (j >= 0 && layers.assertLaserNotNull(new GridPoint2(k, j))) j--;
         cannonTileID = findCannon(i, j, k);
         if (cannonTileID != 0) {
             int dy;
@@ -184,7 +178,7 @@ public class Laser {
             this.cannonPos.set(k, j + dy);
             do {
                 laserEndPositions.add(new GridPoint2(k, j += dy));
-            } while (!wallListener.checkForWall(k, j, 0, dy) && j >= 0 && j <= layers.getHeight());
+            } while (!wallListener.checkForWall(new GridPoint2(k, j), new GridPoint2(0, dy)) && j >= 0 && j <= layers.getHeight());
         }
         return cannonTileID;
     }
@@ -196,14 +190,14 @@ public class Laser {
     public void update() {
         for (GridPoint2 pos : laserEndPositions) {
             if (identifyLaser(pos.x, pos.y, false))
-                layers.setLaserCell(pos.x, pos.y, null);
+                layers.setLaserCell(pos, null);
         }
         if (removeLaser)
             return;
         for (GridPoint2 pos : laserEndPositions) {
             if (identifyLaser(pos.x, pos.y, true))
-                layers.setLaserCell(pos.x, pos.y, this.storedLaserCell);
-            if (layers.assertRobotNotNull(pos.x, pos.y))
+                layers.setLaserCell(pos, this.storedLaserCell);
+            if (layers.assertRobotNotNull(pos))
                 break;
         }
     }
@@ -219,15 +213,15 @@ public class Laser {
     private int findCannon(int i, int j, int k) {
         TileName laserTileName = tiledTranslator.getTileName(laserTileID);
         if (laserTileName == TileName.LASER_VERTICAL) {
-            if (layers.assertLaserCannonNotNull(k, i - 1))
-                return layers.getLaserCannonID(k, i - 1);
-            if (layers.assertLaserCannonNotNull(k, j + 1))
-                return layers.getLaserCannonID(k, j + 1);
+            if (layers.assertLaserCannonNotNull(new GridPoint2(k, i - 1)))
+                return layers.getLaserCannonID(new GridPoint2(k, i - 1));
+            if (layers.assertLaserCannonNotNull(new GridPoint2(k, j + 1)))
+                return layers.getLaserCannonID(new GridPoint2(k, j + 1));
         } else {
-            if (layers.assertLaserCannonNotNull(i - 1, k))
-                return layers.getLaserCannonID(i - 1, k);
-            if (layers.assertLaserCannonNotNull(j + 1, k))
-                return layers.getLaserCannonID(j + 1, k);
+            if (layers.assertLaserCannonNotNull(new GridPoint2(i - 1, k)))
+                return layers.getLaserCannonID(new GridPoint2(i - 1, k));
+            if (layers.assertLaserCannonNotNull(new GridPoint2(j + 1, k)))
+                return layers.getLaserCannonID(new GridPoint2(j + 1, k));
         }
         return 0;
     }
@@ -255,20 +249,20 @@ public class Laser {
      * @return false if there is a cross-laser present, or if logic determines there to be one.
      */
     public boolean identifyLaser(int i, int j, boolean create) {
-        if (layers.assertLaserNotNull(i, j)) {
-            if (layers.getLaserID(i, j) == crossLaser.getTile().getId() && !create) {
+        if (layers.assertLaserNotNull(new GridPoint2(i, j))) {
+            if (layers.getLaserID(new GridPoint2(i, j)) == crossLaser.getTile().getId() && !create) {
                 int storedLaserCellID = storedLaserCell.getTile().getId();
 
                 TileName laserTileName = tiledTranslator.getTileName(storedLaserCellID);
                 if (laserTileName == TileName.LASER_VERTICAL)
-                    layers.setLaserCell(i, j, horizontalLaser);
+                    layers.setLaserCell(new GridPoint2(i, j), horizontalLaser);
                 else
-                    layers.setLaserCell(i, j, verticalLaser);
+                    layers.setLaserCell(new GridPoint2(i, j), verticalLaser);
                 return false;
-            } else if (layers.getLaserID(i, j) != storedLaserCell.getTile().getId() && create) {
-                layers.setLaserCell(i, j, crossLaser);
+            } else if (layers.getLaserID(new GridPoint2(i, j)) != storedLaserCell.getTile().getId() && create) {
+                layers.setLaserCell(new GridPoint2(i, j), crossLaser);
                 return false;
-            } else return layers.getLaserID(i, j) == storedLaserCell.getTile().getId() || create;
+            } else return layers.getLaserID(new GridPoint2(i, j)) == storedLaserCell.getTile().getId() || create;
         }
         return true;
     }

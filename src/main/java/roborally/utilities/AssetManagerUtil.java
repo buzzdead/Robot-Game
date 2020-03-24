@@ -62,7 +62,7 @@ public class AssetManagerUtil {
     private static final AssetDescriptor<Texture> RED
             = new AssetDescriptor<>("robots/redgroupTEST.png", Texture.class);
     private static final AssetDescriptor<Texture> BLUE
-            = new AssetDescriptor<>("robots/bluegroupTEST.png", Texture.class);
+            = new AssetDescriptor<>("robots/1234_1.png", Texture.class);
     private static final AssetDescriptor<Texture> GREEN
             = new AssetDescriptor<>("robots/greengroupTEST.png", Texture.class);
     private static final AssetDescriptor<Texture> YELLOW

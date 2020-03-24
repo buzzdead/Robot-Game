@@ -28,19 +28,19 @@ public class Robot implements Programmable {
         this.robotLogic = robotLogic;
     }
 
-    public Robot(int x, int y, int robotID, LaserRegister laserRegister) {
+    public Robot(GridPoint2 pos, int robotID, LaserRegister laserRegister) {
         this.visitedFlags = new boolean[3];
         RobotLogic robotModel = new RobotLogic(AssetManagerUtil.getRobotName());
-        IRobotView robotView = new RobotView(x, y);
+        IRobotView robotView = new RobotView(pos);
         this.robotLogic = robotModel;
         this.robotView = robotView;
-        setPosition(new GridPoint2(x, y));
+        setPosition(pos);
         this.setTextureRegion(robotID);
-        this.robotLogic.setCheckPoint(x, y);
+        this.robotLogic.setCheckPoint(pos);
         this.layers = new Layers();
         laser = new Laser(0, layers);
         this.listener = new Listener(layers);
-        listener.listenLaser(x, y, getName(), laserRegister);
+        listener.listenLaser(pos, getName(), laserRegister);
         this.laserRegister = laserRegister;
     }
 
@@ -63,12 +63,12 @@ public class Robot implements Programmable {
 
     //region Movement
     @Override
-    public int[] move(int steps) {
+    public GridPoint2 move(int steps) {
         int x = getPosition().x;
         int y = getPosition().y;
-        int[] moveValues = robotLogic.move(steps);
+        GridPoint2 moveValues = robotLogic.move(steps);
         for (int i = 0; i < Math.abs(steps); i++)
-            moveRobot(moveValues[0], moveValues[1]);
+            moveRobot(moveValues);
         Sound sound;
         if (getPosition().dst(x, y) == 1) {
             sound = AssetManagerUtil.manager.get(AssetManagerUtil.STEP1);
@@ -80,7 +80,7 @@ public class Robot implements Programmable {
             sound = AssetManagerUtil.manager.get(AssetManagerUtil.STEP3);
             sound.play(0.25f * AssetManagerUtil.volume);
         }
-        if (listener.listenLaser(getPosition().x, getPosition().y, getName(), laserRegister))
+        if (listener.listenLaser(getPosition(), getName(), laserRegister))
             robotLogic.takeDamage(1);
         return this.robotLogic.move(steps);
     }
@@ -92,16 +92,16 @@ public class Robot implements Programmable {
         return direction;
     }
 
-    public void moveRobot(int dx, int dy) {
+    public void moveRobot(GridPoint2 move) {
         GridPoint2 pos = this.getPosition();
-        GridPoint2 newPos = new GridPoint2(pos.x + dx, pos.y + dy);
+        GridPoint2 newPos = pos.cpy().add(move);
         System.out.println("Old position: " + pos);
         // Checks for robots in its path before moving.
-        if (!listener.listenCollision(pos.x, pos.y, dx, dy)) {
-            if (this.robotView.moveRobot(pos.x, pos.y, dx, dy)) {
+        if (!listener.listenCollision(pos, move)) {
+            if (this.robotView.moveRobot(pos, move)) {
                 this.setPosition(newPos);
                 System.out.println("New position: " + newPos);
-                if (layers.assertHoleNotNull(newPos.x, newPos.y)) {
+                if (layers.assertHoleNotNull(newPos)) {
                     takeDamage(10);
                     this.setLostTexture();
                 }
@@ -154,14 +154,14 @@ public class Robot implements Programmable {
     }
 
     public void deleteRobot() {
-        this.layers.setRobotCell(getPosition().x, getPosition().y, null);
+        this.layers.setRobotCell(getPosition(), null);
         this.setPosition(SettingsUtil.GRAVEYARD);
         clearRegister();
     }
     //endregion
 
     public void checkForLaser() {
-        if (listener.listenLaser(getPosition().x, getPosition().y, getName(), laserRegister))
+        if (listener.listenLaser(getPosition(), getName(), laserRegister))
             robotLogic.takeDamage(1);
     }
 

@@ -29,12 +29,11 @@ public interface Programmable {
      * @param steps Number of steps to move
      * @return The RobotLogic move according to steps
      */
-    int[] move(int steps);
+    GridPoint2 move(int steps);
 
     /**
      * Rotates the programmable in the new direction
      *
-     * @param leftOrRight Left or Right
      * @return
      */
     Direction rotate(Direction direction);

@@ -48,13 +48,13 @@ public class RobotLogic implements Programmable {
 
     //region Movement
     @Override
-    public int[] move(int steps) {
+    public GridPoint2 move(int steps) {
         System.out.println(this.getName());
-        int[] moveValues = getMoveValues();
+        GridPoint2 moveValues = getMoveValues();
         System.out.println("\nMoving forward...");
         if (steps == -1) {
-            moveValues[0] = -moveValues[0];
-            moveValues[1] = -moveValues[1];
+            moveValues.x = -moveValues.x;
+            moveValues.y = -moveValues.y;
         }
         return moveValues;
     }
@@ -64,7 +64,7 @@ public class RobotLogic implements Programmable {
         return this.direction = direction;
     }
 
-    public int[] getMoveValues() {
+    public GridPoint2 getMoveValues() {
         int dy = 0;
         int dx = 0;
         Direction dir = this.direction;
@@ -80,7 +80,7 @@ public class RobotLogic implements Programmable {
         if (dir == Direction.South) {
             dy = -1;
         }
-        return new int[]{dx, dy};
+        return new GridPoint2(dx, dy);
     }
     //endregion
 
@@ -95,8 +95,8 @@ public class RobotLogic implements Programmable {
         return this.checkPoint;
     }
 
-    public void setCheckPoint(int x, int y) {
-        this.checkPoint = new GridPoint2(x, y);
+    public void setCheckPoint(GridPoint2 pos) {
+        this.checkPoint = new GridPoint2(pos.x, pos.y);
     }
     //endregion
 

@@ -331,11 +331,15 @@ public class Game {
 
     public void rotateConveyorBelts(ArrayList<Robot> rotateRobots) {
         TileName tileName;
+        if (rotateRobots.isEmpty())
+            return;
         for (Robot robot : rotateRobots) {
             if (layers.assertConveyorSlowNotNull(robot.getPosition()))
                 tileName = layers.getConveyorSlowTileName(robot.getPosition());
-            else
+            else if (layers.assertConveyorFastNotNull(robot.getPosition()))
                 tileName = layers.getConveyorFastTileName(robot.getPosition());
+            else
+                return;
             if (tileName.toString().contains("COUNTER_CLOCKWISE"))
                 robot.rotate(Direction.turnLeftFrom(robot.getLogic().getDirection()));
             else if (tileName.toString().contains("CLOCKWISE"))
@@ -362,8 +366,7 @@ public class Game {
                 rotateRobots.add(robot);
             }
         }
-        if (!rotateRobots.isEmpty())
-            rotateConveyorBelts(rotateRobots);
+        rotateConveyorBelts(rotateRobots);
     }
 
 
@@ -386,8 +389,7 @@ public class Game {
                 rotateRobots.add(robot);
             }
         }
-        if (!rotateRobots.isEmpty())
-            rotateConveyorBelts(rotateRobots);
+        rotateConveyorBelts(rotateRobots);
     }
     //endregion
 

@@ -17,8 +17,6 @@ import roborally.ui.gdx.events.Events;
 import roborally.utilities.AssetManagerUtil;
 import roborally.utilities.SettingsUtil;
 import roborally.utilities.enums.Direction;
-import roborally.utilities.enums.PhaseStep;
-import roborally.utilities.enums.RoundStep;
 import roborally.utilities.enums.TileName;
 
 import java.util.ArrayList;
@@ -40,8 +38,6 @@ public class Game {
     private Robot winner;
 
     private boolean gameRunning = false;
-    private RoundStep roundStep = RoundStep.NULL_STEP;
-    private PhaseStep phaseStep = PhaseStep.NULL_PHASE;
     private int currentRobotID;
     private Events events;
     private GameOptions gameOptions;
@@ -132,7 +128,6 @@ public class Game {
             System.out.println("\nGame started...");
         }
         gameRunning = true;
-        startNewRound();
     }
 
 
@@ -144,28 +139,6 @@ public class Game {
         setRobots(gameOptions.makeRobots(layers, laserRegister));
     }
 
-    //region Rounds
-
-    public void startNewRound() {
-        assert (gameRunning);
-        assert (roundStep == RoundStep.NULL_STEP);
-        assert (phaseStep == PhaseStep.NULL_PHASE);
-
-        roundStep = RoundStep.ANNOUNCE_POWERDOWN;
-
-        if (DEBUG) {
-            System.out.println("\nRound started...");
-            System.out.println("Entering " + roundStep + "...");
-            System.out.println("Waiting for input..");
-        }
-    }
-
-
-    public RoundStep currentRoundStep() {
-        return roundStep;
-    }
-    //endregion
-
 
     public boolean isRunning() {
         return gameRunning;
@@ -174,18 +147,6 @@ public class Game {
 
     public GameOptions getGameOptions() {
         return this.gameOptions;
-    }
-
-
-    public PhaseStep currentPhaseStep() {
-        return phaseStep;
-    }
-
-    // It reset game states at the end of a round
-    private void cleanUp() {
-        assert (gameRunning);
-        roundStep = RoundStep.NULL_STEP;
-        phaseStep = PhaseStep.NULL_PHASE;
     }
 
 
@@ -451,9 +412,6 @@ public class Game {
 
 
     public boolean checkIfSomeoneWon() {
-        assert (gameRunning);
-        assert (roundStep == RoundStep.PHASES);
-        assert (phaseStep == PhaseStep.CHECK_FOR_WINNER);
         if (DEBUG) System.out.println("\nChecking if someone won...");
 
         boolean someoneWon = checkAllRobotsForWinner();
@@ -467,8 +425,6 @@ public class Game {
 
     private boolean checkAllRobotsForWinner() {
         assert (gameRunning);
-        assert (roundStep == RoundStep.PHASES);
-        assert (phaseStep == PhaseStep.CHECK_FOR_WINNER);
         checkAllRobotsAreCreated();
 
         for (Robot robot : robots) {
@@ -514,7 +470,6 @@ public class Game {
             removeFromUI(robot, true);
         }
         robots.clear();
-        cleanUp();
         gameRunning = false;
     }
 
@@ -538,25 +493,5 @@ public class Game {
             else if (m == 3)
                 robot.rotate(Direction.turnRightFrom(robot.getLogic().getDirection()));
         }
-    }
-
-
-    public void revealProgramCards() {
-        // TODO: Implement simple method to make some use of our ProgramCards class.
-    }
-
-
-    public void programRobots() {
-        // TODO: Implement some simple method to make some use of ProgramCards.
-    }
-
-
-    public void dealCards() {
-        // TODO: Implement some simple method to make some use of ProgramCards.
-    }
-
-
-    public void announcePowerDown() {
-        // TODO: Implement some damage system.
     }
 }

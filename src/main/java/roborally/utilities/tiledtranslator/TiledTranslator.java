@@ -4,7 +4,7 @@ import roborally.utilities.enums.TileName;
 
 import java.util.HashMap;
 
-public class TiledTranslator implements ITiledTranslator {
+public class TiledTranslator {
 
     private HashMap<Integer, TileName> tiles;
 
@@ -16,7 +16,6 @@ public class TiledTranslator implements ITiledTranslator {
         }
     }
 
-    @Override
     public TileName getTileName(int tiledID) {
         return tiles.get(tiledID);
     }

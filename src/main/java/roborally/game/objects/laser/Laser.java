@@ -6,7 +6,6 @@ import roborally.ui.Layers;
 import roborally.ui.listeners.WallListener;
 import roborally.utilities.AssetManagerUtil;
 import roborally.utilities.enums.TileName;
-import roborally.utilities.tiledtranslator.ITiledTranslator;
 import roborally.utilities.tiledtranslator.TiledTranslator;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class Laser {
     private int cannonTileID;
     private boolean removeLaser;
 
-    private ITiledTranslator tiledTranslator;
+    private TiledTranslator tiledTranslator;
     private Layers layers;
     private WallListener wallListener;
 

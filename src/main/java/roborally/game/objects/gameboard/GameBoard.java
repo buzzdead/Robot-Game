@@ -2,10 +2,9 @@ package roborally.game.objects.gameboard;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.GridPoint2;
-import roborally.utilities.tiledtranslator.ITiledTranslator;
+import roborally.ui.Layers;
 import roborally.utilities.enums.TileName;
 import roborally.utilities.tiledtranslator.TiledTranslator;
-import roborally.ui.Layers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +14,7 @@ public class GameBoard {
     private Layers layers;
     private HashMap<TileName, Integer> flagIdMap;
 
-    private ITiledTranslator tiledTranslator;
+    private TiledTranslator tiledTranslator;
 
     public GameBoard() {
         tiledTranslator = new TiledTranslator();

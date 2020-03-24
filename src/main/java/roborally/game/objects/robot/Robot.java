@@ -8,14 +8,13 @@ import roborally.game.objects.laser.Laser;
 import roborally.game.objects.laser.LaserRegister;
 import roborally.ui.Layers;
 import roborally.ui.listeners.Listener;
-import roborally.ui.robot.IRobotView;
 import roborally.ui.robot.RobotView;
 import roborally.utilities.AssetManagerUtil;
 import roborally.utilities.SettingsUtil;
 import roborally.utilities.enums.Direction;
 
 public class Robot implements Programmable {
-    private IRobotView robotView;
+    private RobotView robotView;
     private RobotLogic robotLogic;
     private boolean[] visitedFlags;
     private Laser laser;
@@ -31,7 +30,7 @@ public class Robot implements Programmable {
     public Robot(GridPoint2 pos, int robotID, LaserRegister laserRegister) {
         this.visitedFlags = new boolean[3];
         RobotLogic robotModel = new RobotLogic(AssetManagerUtil.getRobotName());
-        IRobotView robotView = new RobotView(pos);
+        RobotView robotView = new RobotView(pos);
         this.robotLogic = robotModel;
         this.robotView = robotView;
         setPosition(pos);

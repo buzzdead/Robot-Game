@@ -1,9 +1,9 @@
 package roborally.game;
 
 import com.badlogic.gdx.math.GridPoint2;
-import roborally.game.objects.gameboard.Flag;
-import roborally.game.objects.laser.LaserRegister;
-import roborally.game.objects.robot.Robot;
+import roborally.objects.gameboard.Flag;
+import roborally.objects.laser.LaserRegister;
+import roborally.objects.robot.Robot;
 import roborally.ui.Layers;
 import roborally.utilities.AssetManagerUtil;
 

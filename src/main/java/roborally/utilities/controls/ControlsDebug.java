@@ -16,11 +16,8 @@ public class ControlsDebug implements IControls {
         menuControlMap.put(Input.Keys.LEFT, () -> game.getFirstRobot().rotate(game.getFirstRobot().rotate(Direction.turnLeftFrom(game.getFirstRobot().getLogic().getDirection()))));
         menuControlMap.put(Input.Keys.RIGHT, () -> game.getFirstRobot().rotate(game.getFirstRobot().rotate(Direction.turnRightFrom(game.getFirstRobot().getLogic().getDirection()))));
         menuControlMap.put(Input.Keys.F, game::fireLaser);
-        menuControlMap.put(Input.Keys.SPACE, game::registerFlagPositions);
-        menuControlMap.put(Input.Keys.W, game::checkIfSomeoneWon);
         menuControlMap.put(Input.Keys.R, game::restartGame);
         menuControlMap.put(Input.Keys.ESCAPE, game::exitGame);
-        menuControlMap.put(Input.Keys.A, game::fireLasers);
         menuControlMap.put(Input.Keys.M, game.getGameOptions()::enterMenu);
         menuControlMap.put(Input.Keys.O, game::playNextCard);
         menuControlMap.put(Input.Keys.T, game::testEndPhase);

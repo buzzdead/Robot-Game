@@ -1,4 +1,4 @@
-package roborally.game.objects.robot;
+package roborally.objects.robot;
 
 import com.badlogic.gdx.math.GridPoint2;
 import roborally.utilities.enums.Direction;

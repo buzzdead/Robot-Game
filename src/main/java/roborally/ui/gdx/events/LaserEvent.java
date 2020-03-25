@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import roborally.game.objects.robot.Robot;
+import roborally.objects.robot.Robot;
 import roborally.utilities.AssetManagerUtil;
 import roborally.utilities.enums.TileName;
 

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import roborally.game.Game;
-import roborally.game.objects.robot.Robot;
+import roborally.objects.robot.Robot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,12 +68,12 @@ public class Events {
     public void waitMoveEvent(float dt, Game game) {
         this.dt += dt;
         if (this.dt >= gameSpeed) {
-            game.playNextCard();
+            game.getRound().playNextCard();
             this.dt = 0;
             this.pauseCount++;
         }
         if (pauseCount / registerPhase == game.getRobots().size()) {
-            game.fireLasers();
+            game.getRound().fireLasers();
             registerPhase++;
         }
         if (pauseCount == 5 * game.getRobots().size()) {

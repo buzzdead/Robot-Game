@@ -1,4 +1,4 @@
-package roborally.game.objects.laser;
+package roborally.objects.laser;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.GridPoint2;

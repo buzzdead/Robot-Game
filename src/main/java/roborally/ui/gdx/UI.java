@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -46,10 +45,6 @@ public class UI extends InputAdapter implements ApplicationListener {
     private Image bar3;
     private Image bar4;
     private Image poweredDown;
-    private TextureRegion[][] testRegion;
-    private Image testBot;
-    private Image testBot2;
-    private Image testImage;
 
 
     public UI() {
@@ -176,32 +171,12 @@ public class UI extends InputAdapter implements ApplicationListener {
 
     public boolean keyUp(int keycode) {
         if (keycode == Input.Keys.ENTER && !events.hasWaitEvent()) {
-            runCardPhase(game.getCards());
+            game.newRound();
+            runCardPhase(game.getRound().getCards());
             return true;
         }
-        if (!game.isRunning()) {
-            debugControls.getAction(keycode).run();
-        }
+        debugControls.getAction(keycode).run();
 
-        /*if (game.isRunning()) {
-            // Start new round if no round is currently activ1e
-            if (game.currentRoundStep() == RoundStep.NULL_STEP) {
-                game.startNewRound();
-            }
-            if (game.currentRoundStep() == RoundStep.PROGRAM_ROBOT) {
-                programRobotControls.getAction(keycode).run();
-            }
-            // Decides what happens when we are running through phases
-            if (game.currentRoundStep() == RoundStep.PHASES) {
-                if (game.currentPhaseStep() == PhaseStep.REVEAL_CARDS) {
-                    game.revealProgramCards();
-                }
-                // Handles logic when in "Check for winner step
-                if (game.currentPhaseStep() == PhaseStep.CHECK_FOR_WINNER) {
-                    game.checkIfSomeoneWon();
-                }
-            }
-        }*/
         if (game.getGameOptions().getMenu())
             paused = true;
         return true;

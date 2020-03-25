@@ -1,11 +1,11 @@
-package roborally.game.objects.robot;
+package roborally.objects.robot;
 
 import com.badlogic.gdx.math.GridPoint2;
 import org.junit.Before;
 import org.junit.Test;
-import roborally.game.objects.cards.CardsInHand;
-import roborally.game.objects.cards.IProgramCards;
-import roborally.game.objects.cards.ProgramCards;
+import roborally.objects.cards.CardsInHand;
+import roborally.objects.cards.IProgramCards;
+import roborally.objects.cards.ProgramCards;
 import roborally.utilities.enums.Direction;
 
 import static org.hamcrest.core.IsNot.not;

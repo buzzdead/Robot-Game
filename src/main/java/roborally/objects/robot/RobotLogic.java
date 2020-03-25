@@ -1,9 +1,9 @@
-package roborally.game.objects.robot;
+package roborally.objects.robot;
 
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.Queue;
-import roborally.game.objects.cards.CardsInHand;
-import roborally.game.objects.cards.IProgramCards;
+import roborally.objects.cards.CardsInHand;
+import roborally.objects.cards.IProgramCards;
 import roborally.utilities.enums.Direction;
 
 import java.util.ArrayList;

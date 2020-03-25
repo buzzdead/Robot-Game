@@ -1,7 +1,7 @@
 package roborally.ui.listeners;
 
 import com.badlogic.gdx.math.GridPoint2;
-import roborally.game.objects.robot.Robot;
+import roborally.objects.robot.Robot;
 import roborally.ui.Layers;
 import roborally.utilities.AssetManagerUtil;
 

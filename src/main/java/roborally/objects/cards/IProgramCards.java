@@ -1,4 +1,4 @@
-package roborally.game.objects.cards;
+package roborally.objects.cards;
 
 import java.util.ArrayList;
 

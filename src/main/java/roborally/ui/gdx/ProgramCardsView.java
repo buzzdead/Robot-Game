@@ -5,15 +5,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import roborally.game.objects.cards.IProgramCards;
+import roborally.objects.cards.IProgramCards;
 import roborally.utilities.AssetManagerUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class ProgramCardsView {
@@ -25,7 +23,6 @@ public class ProgramCardsView {
     private int cardHeight;
     private Label doneLabel;
     private float chosenX;
-    private float xPosition;
     private HashMap<Integer, Float> xPositions;
 
     public ProgramCardsView() {
@@ -104,9 +101,21 @@ public class ProgramCardsView {
         Label selectedOrderLabel = makeSelectedOrderLabel();
         Label priorityLabel = makePriorityLabel(priority);
         group.addActor(priorityLabel);
-        group.addListener(new InputListener() {
+        group.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (group.getY() < 200)
+                    group.getChildren().get(1).setColor(Color.WHITE);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                if (group.getY() < 200)
+                    group.getChildren().get(1).setColor(Color.BLACK);
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
                 for (int i = 0; i < order.length; i++)
                     if (groups.indexOf(group) == order[i]) {
                         group.getChildren().get(1).setColor(Color.GREEN);
@@ -116,13 +125,13 @@ public class ProgramCardsView {
                         selectedOrderLabel.setColor(Color.GREEN);
                         selectedOrderLabel.setText("");
                         reArrange(i);
-                        if(cardPick -1 != -1)
+                        if (cardPick - 1 != -1)
                             cardPick--;
-                        return true;
+                        return;
                     }
                 if(cardPick == 5) {
                     doneLabel.setColor(Color.RED);
-                    return true;
+                    return;
                 }
                 topLabelList.add(cardPick, selectedOrderLabel);
                 topLabelList.get(cardPick).setText(Integer.toString((cardPick)));
@@ -134,7 +143,6 @@ public class ProgramCardsView {
                 xPositions.put(groups.indexOf(group), group.getX());
                 chosenX = 3 * getCardWidth() + getCardWidth() * cardPick+1;
                 group.setX(chosenX);
-                return true;
             }
         });
         this.groups.add(group);
@@ -155,11 +163,11 @@ public class ProgramCardsView {
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = new BitmapFont();
         Label label = new Label(Integer.toString(priority), labelStyle);
-        label.setX(15);
-        label.setY(0);
-        label.setFontScale(0.001f);
+        label.setY(65);
+        label.setX((4 - label.getText().length) * 10);
         label.setFontScaleX(2);
-        label.setColor(Color.GREEN.add(Color.RED).add(Color.BLACK));
+        label.setColor(Color.BLACK);
+        Color.GREEN.add(Color.RED).add(Color.BLACK);
         return label;
     }
 
